@@ -1,0 +1,19 @@
+﻿version: '3.8'
+
+services:
+  supply-service:
+    image: 'ghcr.io/ozon-edu-csharp-2021/supply-service:main'
+  emailing-service:
+    image: 'ghcr.io/ozon-edu-csharp-2021/emailing-service:main'
+  employees-service:
+    image: 'ghcr.io/ozon-edu-csharp-2021/employees-service:main'
+  stock-api:
+    image: 'ghcr.io/ozon-edu-csharp-2021/stock-api:main'
+    depends_on:
+      - supply-service
+  merchandise-service:
+    build:
+      context: .
+      dockerfile: dockerfile
+    depends_on:
+      - stock-api
