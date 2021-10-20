@@ -3,17 +3,27 @@
 services:
   supply-service:
     image: 'ghcr.io/ozon-edu-csharp-2021/supply-service:main'
+    ports:
+      - "8080:80"
   emailing-service:
     image: 'ghcr.io/ozon-edu-csharp-2021/emailing-service:main'
+    ports:
+      - "8081:80"
   employees-service:
     image: 'ghcr.io/ozon-edu-csharp-2021/employees-service:main'
+    ports:
+      - "8082:80"
   stock-api:
     image: 'ghcr.io/ozon-edu-csharp-2021/stock-api:main'
     depends_on:
       - supply-service
+    ports:
+      - "8083:80"
   merchandise-service:
     build:
       context: ..\.
       dockerfile: dockerfile
     depends_on:
       - stock-api
+    ports:
+      - "8084:80"
