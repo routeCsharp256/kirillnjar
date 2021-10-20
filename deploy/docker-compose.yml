@@ -13,7 +13,7 @@ services:
       - supply-service
   merchandise-service:
     build:
-      context: .
+      context: ..\.
       dockerfile: dockerfile
     depends_on:
       - stock-api
