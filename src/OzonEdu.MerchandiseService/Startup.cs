@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using OzonEdu.MerchandiseService.GrpcServices;
+using OzonEdu.MerchandiseService.Infrastructure.Interceptors;
 
 namespace OzonEdu.MerchandiseService
 {
@@ -10,7 +12,11 @@ namespace OzonEdu.MerchandiseService
         public void Configure(IApplicationBuilder app)
         {
             app.UseRouting();
-            app.UseEndpoints(endpoints => { });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcService<MerchandiseGrpcServices>();
+                endpoints.MapControllers();
+            });
         }
     }
 }
