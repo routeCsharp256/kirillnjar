@@ -20,11 +20,11 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            await LogRequest(context);
+            await LogRequestAsync(context);
             await _next(context);
         }
 
-        private async Task LogRequest(HttpContext context)
+        private void LogRequest(HttpContext context)
         {
             try
             {
@@ -47,5 +47,8 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Middlewares
                 _logger.LogError(e, "Could not log request");
             }
         }
+        
+        private async Task LogRequestAsync(HttpContext context) =>
+            await Task.Run(() => LogRequest(context));
     }
 }

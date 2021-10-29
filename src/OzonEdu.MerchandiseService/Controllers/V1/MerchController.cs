@@ -16,15 +16,15 @@ namespace OzonEdu.MerchandiseService.Controllers.V1
         public MerchControllerController()
         {
         }
-        
+
         [HttpPost]
-        public async Task<ActionResult<RequestMerchResponse>> Request(RequestMerchPostViewModel postViewModel ,CancellationToken token)
+        public Task<ActionResult<RequestMerchResponse>> RequestMerch(RequestMerchPostViewModel postViewModel ,CancellationToken token)
         {
             throw new NotImplementedException();
         }
         
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MerchInfoResponse>>> GetEmployeeMerchById([FromQuery]long employeeId, CancellationToken token)
+        public Task<ActionResult<IEnumerable<MerchInfoResponse>>> GetEmployeeMerchById([FromQuery]long employeeId, CancellationToken token)
         {
             throw new NotImplementedException();
         }

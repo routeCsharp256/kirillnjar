@@ -8,14 +8,14 @@ namespace OzonEdu.MerchandiseService.GrpcServices
 {
     public class MerchandiseGrpcServices : MerchandiseServiceGrpc.MerchandiseServiceGrpcBase
     {
-        public override async Task<RequestMerchandiseResponse> RequestMerchandise(
+        public override Task<RequestMerchandiseResponse> RequestMerchandise(
             RequestMerchandiseRequest request, 
             ServerCallContext context)
         {
             throw new RpcException(new Status(StatusCode.Unimplemented, "Unimplemented"));
         }
 
-        public override async Task<GetEmployeeMerchByIdResponse> GetEmployeeMerchById(
+        public override Task<GetEmployeeMerchByIdResponse> GetEmployeeMerchById(
             GetEmployeeMerchByIdRequest request, 
             ServerCallContext context)
         {

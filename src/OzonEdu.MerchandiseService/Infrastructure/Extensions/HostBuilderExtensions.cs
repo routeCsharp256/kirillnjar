@@ -27,10 +27,6 @@ namespace OzonEdu.MerchandiseService.Infrastructure.Extensions
                     options.CustomSchemaIds(x => x.FullName);
                     options.SchemaFilter<EnumSchemaFilter>();
                     options.UseInlineDefinitionsForEnums();
-                    
-                    var xmlFileName = Assembly.GetExecutingAssembly().GetName().Name + ".xml";
-                    var xmlFilePath = Path.Combine(AppContext.BaseDirectory, xmlFileName);
-                    options.IncludeXmlComments(xmlFilePath);
                 });
                 services.AddGrpc(options => options.Interceptors.Add<LoggingInterceptor>());
                 services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>());
