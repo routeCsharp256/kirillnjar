@@ -2,7 +2,7 @@
 {
     public class RequestMerchPostViewModel
     {
-        public long employeeId { get; set; }
-        public int merchTypeId { get; set; }
+        public long EmployeeId { get; set; }
+        public int MerchTypeId { get; set; }
     }
 }
