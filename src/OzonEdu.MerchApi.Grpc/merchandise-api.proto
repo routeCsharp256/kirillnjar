@@ -1,0 +1,40 @@
+syntax = "proto3";
+option csharp_namespace = "OzonEdu.MerchApi.Grpc";
+package MerchandiseService;
+
+import "google/protobuf/timestamp.proto";
+
+service MerchandiseServiceGrpc {
+  rpc RequestMerchandise (RequestMerchandiseRequest) returns (RequestMerchandiseResponse);
+  rpc GetEmployeeMerchById (GetEmployeeMerchByIdRequest) returns (GetEmployeeMerchByIdResponse);
+}
+
+enum StatusType{
+  RESERVED = 0;
+  ALREADY_GIVEN = 1;
+  OUT_OF_STOCK = 2;
+}
+
+message RequestMerchandiseRequest{
+  int64 employee_id = 1;
+  int32 merch_type_id = 2;
+}
+
+  
+message RequestMerchandiseResponse{
+  bool is_success = 1;  
+  StatusType status_type = 2;
+}
+
+message GetEmployeeMerchByIdRequest{
+  int64 employee_id = 1;
+}
+
+message GetEmployeeMerchByIdResponse{
+  repeated GetEmployeeMerchByIdResponseUnit merch_given = 1;
+}
+
+message GetEmployeeMerchByIdResponseUnit{
+  google.protobuf.Timestamp date_giving = 1;
+  int32 type_id = 2;
+} 
