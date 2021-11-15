@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using OzonEdu.MerchApi.HttpModels.Request;
 using OzonEdu.MerchApi.HttpModels.Response;
 
-namespace OzonEdu.MerchApi.HttpClients.Interfaces
+namespace OzonEdu.HttpClients.Interfaces
 {
     public interface IMerchandiseHttpClient
     {

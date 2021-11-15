@@ -4,11 +4,11 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using OzonEdu.MerchApi.HttpClients.Interfaces;
+using OzonEdu.HttpClients.Interfaces;
 using OzonEdu.MerchApi.HttpModels.Request;
 using OzonEdu.MerchApi.HttpModels.Response;
 
-namespace OzonEdu.MerchApi.HttpClients
+namespace OzonEdu.HttpClients
 {
     public class MerchandiseHttpClient : IMerchandiseHttpClient
     {

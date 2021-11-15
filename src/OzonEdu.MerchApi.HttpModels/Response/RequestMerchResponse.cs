@@ -1,4 +1,5 @@
 ﻿using System;
+using OzonEdu.MerchApi.Enums;
 
 namespace OzonEdu.MerchApi.HttpModels.Response
 {
@@ -6,15 +7,5 @@ namespace OzonEdu.MerchApi.HttpModels.Response
     {
         public bool IsSuccess { get; set; }
         public StatusType StatusType { get; set; }
-    }
-    
-    /// <summary>
-    /// Enum of request status
-    /// </summary>
-    public enum StatusType
-    {
-        Reserved = 0,
-        AlreadyGiven = 1,
-        OutOfStock = 2
     }
 }

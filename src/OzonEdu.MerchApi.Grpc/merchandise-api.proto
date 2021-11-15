@@ -11,8 +11,9 @@ service MerchandiseServiceGrpc {
 
 enum StatusType{
   RESERVED = 0;
-  ALREADY_GIVEN = 1;
-  OUT_OF_STOCK = 2;
+  OUT_OF_STOCK = 1;
+  ALREADY_GIVEN = 2;
+  CANCELED = 3;  
 }
 
 message RequestMerchandiseRequest{
