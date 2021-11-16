@@ -31,9 +31,9 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
             , IStockApiService stockApiRepository
             , IMediator mediator)
         {
+            _merchRequestRepository = merchRequestRepository;
             _merchPackRepository = merchPackRepository;
             _merchRequestUnitOfWork = merchRequestUnitOfWork;
-            _merchRequestRepository = merchRequestRepository;
             _stockApiService = stockApiRepository;
             _mediator = mediator;
         }
@@ -46,7 +46,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
                     new Email(request.Employee.Email)
                     , request.MerchPackTypeId
                     , cancellationToken);
-            
+
             if (previousRequests.Any(_ => _.IsIssuedLessYear(DateTime.UtcNow)))
             {
                 return new IssueMerchCommandResponse
@@ -89,6 +89,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
                 await _mediator.Publish(new MerchPackReservationFailureDomainEvent(merchRequest)
                     , cancellationToken);
             }
+            await _merchRequestRepository.CreateAsync(merchRequest, cancellationToken);
             await _merchRequestUnitOfWork.SaveChangesAsync(cancellationToken);
             
             return new IssueMerchCommandResponse

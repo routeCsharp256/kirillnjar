@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using OzonEdu.MerchApi.Domain.Exceptions.EmployeeAggregate;
-using OzonEdu.MerchApi.Domain.Models;
+﻿using OzonEdu.MerchApi.Domain.Models;
 
 namespace OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate
 {

@@ -17,8 +17,11 @@ enum StatusType{
 }
 
 message RequestMerchandiseRequest{
-  int64 employee_id = 1;
-  int32 merch_type_id = 2;
+  string employee_email = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string middle_name = 4;
+  int32 merch_pack_id = 5;
 }
 
   
@@ -28,7 +31,7 @@ message RequestMerchandiseResponse{
 }
 
 message GetEmployeeMerchByIdRequest{
-  int64 employee_id = 1;
+  string employee_email = 1;
 }
 
 message GetEmployeeMerchByIdResponse{

@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.Events;
 using OzonEdu.MerchApi.Enums;
 using OzonEdu.MerchApi.Infrastructure.Models;

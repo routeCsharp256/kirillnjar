@@ -7,7 +7,6 @@ using OzonEdu.MerchApi.Domain.AggregationModels.MerchItemAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.Contracts;
 using OzonEdu.MerchApi.Domain.Events;
-using OzonEdu.MerchApi.Enums;
 using OzonEdu.MerchApi.Infrastructure.Models;
 using OzonEdu.MerchApi.Infrastructure.Services.Interfaces;
 
@@ -65,6 +64,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvent
                         if (isReservedSuccess)
                         {
                             request.SetAsDone(new MerchRequestDateTime(DateTime.UtcNow));
+                            await _merchRequestRepository.UpdateAsync(request, cancellationToken);
                             await _mediator.Publish(new MerchPackReservationSuccessDomainEvent(request)
                                 , cancellationToken);
                         }

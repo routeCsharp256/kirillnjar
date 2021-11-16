@@ -9,7 +9,7 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate
     {
         public Email(string value)
         {
-            if (IsValidEmail(value))
+            if (!IsValidEmail(value))
                 throw new InvalidEmailException($"Employee email \"{value}\" is not valid");
             Value = value;
         }

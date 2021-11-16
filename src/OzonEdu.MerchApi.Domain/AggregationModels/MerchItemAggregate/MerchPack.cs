@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.Models;
 
 namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchItemAggregate

@@ -1,5 +1,4 @@
-﻿using System;
-using OzonEdu.MerchApi.Enums;
+﻿using OzonEdu.MerchApi.Enums;
 
 namespace OzonEdu.MerchApi.HttpModels.Response
 {

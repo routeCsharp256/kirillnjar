@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MediatR;
+﻿using MediatR;
 using OzonEdu.MerchApi.Infrastructure.Queries.MerchRequestAggregate.Responses;
 
 namespace OzonEdu.MerchApi.Infrastructure.Queries.MerchRequestAggregate

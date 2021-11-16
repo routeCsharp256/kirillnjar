@@ -2,7 +2,6 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using OzonEdu.MerchApi.Infrastructure.Extensions;
-using OzonEdu.MerchApi.Infrastructure.Middlewares;
 
 namespace OzonEdu.MerchApi.Infrastructure.StartupFilters
 {

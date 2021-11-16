@@ -11,10 +11,6 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate
         
         public MerchRequestDateTime(DateTime value)
         {
-            if (value <= DateTime.UtcNow)
-            {
-                throw new MerchRequestDateException("date cannot be greater than current");
-            }
             Value = value;
         }
 

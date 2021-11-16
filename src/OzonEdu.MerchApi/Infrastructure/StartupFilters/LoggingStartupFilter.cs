@@ -1,5 +1,4 @@
 ﻿using System;
-using Grpc.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using OzonEdu.MerchApi.Infrastructure.Extensions;
