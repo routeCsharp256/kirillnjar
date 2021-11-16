@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using OzonEdu.MerchApi.Domain.Exceptions.MerchItemAggregate;
+using OzonEdu.MerchApi.Domain.Exceptions.MerchPackAggregate;
 using OzonEdu.MerchApi.Domain.Models;
 
-namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchItemAggregate
+namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate
 {
     public class MerchItemsQuantity : ValueObject
     {

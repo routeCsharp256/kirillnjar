@@ -1,4 +1,5 @@
-﻿using OzonEdu.MerchApi.Domain.Models;
+﻿using OzonEdu.MerchApi.Domain.Exceptions;
+using OzonEdu.MerchApi.Domain.Models;
 
 namespace OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate
 {
@@ -7,8 +8,8 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate
         public Employee(Email email
             , EmployeeFullName name)
         {
-            Email = email;
-            Name = name;
+            Email = email ?? throw new RequiredEntityPropertyIsNullException(nameof(email), "Employee email can't be null");
+            Name = name ?? throw new RequiredEntityPropertyIsNullException(nameof(name), "Employee name can't be null");
             Status = EmployeeStatus.Work;
         }
         public Employee(Email email
@@ -27,6 +28,11 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate
 
         public Email Email { get; }
         public EmployeeFullName Name { get; }
-        public EmployeeStatus Status { get; }
+        public EmployeeStatus Status { get; set; }
+
+        public void Dissmiss()
+        {
+            Status = EmployeeStatus.Dismissed;
+        }
     }
 }

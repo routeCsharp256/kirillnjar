@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using OzonEdu.MerchApi.Domain.AggregationModels.MerchItemAggregate;
+using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.Contracts;
 using OzonEdu.MerchApi.Domain.Events;

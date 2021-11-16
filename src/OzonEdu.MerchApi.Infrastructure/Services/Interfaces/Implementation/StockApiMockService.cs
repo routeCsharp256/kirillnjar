@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using OzonEdu.MerchApi.Domain.AggregationModels.MerchItemAggregate;
 using OzonEdu.MerchApi.Infrastructure.Models;
 
 namespace OzonEdu.MerchApi.Infrastructure.Services.Interfaces.Implementation

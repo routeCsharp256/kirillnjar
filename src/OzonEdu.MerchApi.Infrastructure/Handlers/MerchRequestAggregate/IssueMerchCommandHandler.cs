@@ -4,14 +4,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate;
-using OzonEdu.MerchApi.Domain.AggregationModels.MerchItemAggregate;
+using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.Contracts;
 using OzonEdu.MerchApi.Domain.Events;
+using OzonEdu.MerchApi.Domain.Exceptions.MerchPackAggregate;
 using OzonEdu.MerchApi.Domain.Models;
 using OzonEdu.MerchApi.Enums;
 using OzonEdu.MerchApi.Infrastructure.Commands.IssueMerch;
-using OzonEdu.MerchApi.Infrastructure.Commands.MerchIssue;
+using OzonEdu.MerchApi.Infrastructure.Commands.IssueMerch.Responses;
 using OzonEdu.MerchApi.Infrastructure.Models;
 using OzonEdu.MerchApi.Infrastructure.Services.Interfaces;
 
@@ -55,19 +56,21 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
                     StatusType = StatusType.AlreadyGiven,
                 };
             }
-
+            
+            var merchPack = await _merchPackRepository.GetByTypeIdAsync(request.MerchPackTypeId, cancellationToken)
+                ?? throw new MerchPackNotFoundException($"Merch pack with id {request.MerchPackTypeId} not found");
+            
             var merchRequest = new MerchRequest(
                 new Employee(
                     new Email(request.Employee.Email)
                     , new EmployeeFullName(request.Employee.FirstName, request.Employee.LastName, request.Employee.MiddleName))
-                , request.MerchPackTypeId
+                , merchPack.Id
                 , new MerchRequestDateTime(DateTime.UtcNow)
                 , new MerchRequestFrom(
                     Enumeration
                         .GetAll<MerchRequestFromType>()
                         .FirstOrDefault(it => it.Id.Equals(request.FromType))));
 
-            var merchPack = await _merchPackRepository.GetByTypeIdAsync(request.MerchPackTypeId, cancellationToken);
             var isReservedSuccess = await _stockApiService
                 .TryReserve(merchPack.Items.ToDictionary(
                     _ => new MerchItemDTO

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using OzonEdu.MerchApi.Domain.Exceptions.EmployeeAggregate;
 using OzonEdu.MerchApi.Domain.Models;
 
@@ -10,16 +11,22 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate
         public string LastName { get; }
         public string MiddleName { get; }
 
-        public EmployeeFullName(string firstName, string lastName, string middleName)
+        public EmployeeFullName(string lastName, string firstName , string middleName)
         {
-            if (string.IsNullOrWhiteSpace(firstName)
-                || string.IsNullOrWhiteSpace(lastName)
-                || (MiddleName is not null && string.IsNullOrWhiteSpace(middleName)))
+            if (!IsValidName(firstName, lastName, middleName))
                 throw new InvalidNameException($"Name {lastName} {firstName} {middleName} is invalid");
             FirstName = firstName;
             LastName = lastName;
-            MiddleName = lastName;
+            MiddleName = middleName;
         }
+
+
+        private static bool IsValidName(string firstName, string lastName, string middleName)
+            => (!string.IsNullOrWhiteSpace(firstName)
+                && !string.IsNullOrWhiteSpace(lastName)
+               && Regex.IsMatch(firstName, @"^[А-ЯA-Za-zа-я]+$")
+               && Regex.IsMatch(lastName, @"^[А-ЯA-Za-zа-я]+$")
+               && !(middleName is not null && !Regex.IsMatch(middleName, @"^[А-ЯA-Za-zа-я]+$")));
         
         protected override IEnumerable<object> GetEqualityComponents()
         {

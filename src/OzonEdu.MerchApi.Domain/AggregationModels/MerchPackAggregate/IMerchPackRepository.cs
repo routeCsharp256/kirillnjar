@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using OzonEdu.MerchApi.Domain.Contracts;
 
-namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchItemAggregate
+namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate
 {
     public interface IMerchPackRepository : IRepository<MerchItem>
     {

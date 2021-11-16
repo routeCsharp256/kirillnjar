@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using OzonEdu.MerchApi.Domain.Exceptions.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.Models;
 
 namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OzonEdu.MerchApi.Domain.Exceptions.MerchItemAggregate
+namespace OzonEdu.MerchApi.Domain.Exceptions.MerchPackAggregate
 {
     public class InvalidQuantityException : Exception
     {

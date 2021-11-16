@@ -1,5 +1,6 @@
 ﻿using System;
 using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate;
+using OzonEdu.MerchApi.Domain.Exceptions;
 using OzonEdu.MerchApi.Domain.Exceptions.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.Models;
 
@@ -13,10 +14,16 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate
             , MerchRequestDateTime merchRequestDateTime
             , MerchRequestFrom merchRequestFrom)
         {
-            Employee = employee;
+            Employee = employee ?? throw new RequiredEntityPropertyIsNullException(
+                nameof(employee),
+                "Merch request must have employee");
             MerchPackId = merchPackId;
-            MerchRequestFrom = merchRequestFrom;
-            MerchRequestDateTime = merchRequestDateTime;
+            MerchRequestFrom = merchRequestFrom ?? throw new RequiredEntityPropertyIsNullException(
+                    nameof(merchRequestFrom),
+                    "Merch request must have merch request from type");
+            MerchRequestDateTime = merchRequestDateTime ?? throw new RequiredEntityPropertyIsNullException(
+                nameof(merchRequestDateTime),
+                "Merch request must have date and time");
             MerchRequestStatus = MerchRequestStatus.InWork;
         }
         public MerchRequest(
@@ -54,7 +61,7 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate
             if (MerchRequestStatus.Equals(MerchRequestStatus.Done))
             {
                 throw new MerchRequestStatusException(
-                    $"Status {MerchRequestStatus.AwaitingDelivery.Name} can be set only after {MerchRequestStatus.InWork.Name}");
+                    $"Status {MerchRequestStatus.AwaitingDelivery.Name} can't be set after {MerchRequestStatus.Done.Name}");
             }
 
             InsureNotCanceled();
@@ -72,7 +79,7 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate
         
         public void SetAsCanceled(MerchRequestDateTime merchRequestDateTime)
         {
-            if (!MerchRequestStatus.Equals(MerchRequestStatus.Done))
+            if (MerchRequestStatus.Equals(MerchRequestStatus.Done))
             {
                 throw new MerchRequestStatusException(
                     $"Status {MerchRequestStatus.Canceled.Name} cannot be set after status {MerchRequestStatus.Done.Name}");
@@ -83,7 +90,7 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate
         }
 
         public bool IsIssuedLessYear(DateTime now)
-            => (now - MerchRequestDateTime.Value).TotalDays <= 365;
+            => now <  MerchRequestDateTime.Value.AddYears(1);
 
         private void InsureNotCanceled()
         {

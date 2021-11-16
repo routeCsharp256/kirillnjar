@@ -2,10 +2,11 @@ using System;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using OzonEdu.MerchApi.Domain.AggregationModels.MerchItemAggregate;
+using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.Contracts;
 using OzonEdu.MerchApi.GrpcServices;
+using OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate;
 using OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock;
 using OzonEdu.MerchApi.Infrastructure.Services.Interfaces;
 using OzonEdu.MerchApi.Infrastructure.Services.Interfaces.Implementation;
@@ -16,17 +17,16 @@ namespace OzonEdu.MerchApi
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            AddMediator(services);
             AddDatabaseComponents(services);
             AddMockServices(services);
             AddMockRepositories(services);
+            AddMediator(services);
         }
         
 
         private static void AddMediator(IServiceCollection services)
         {    
-            var assembly = AppDomain.CurrentDomain.Load("OzonEdu.MerchApi.Infrastructure");
-            services.AddMediatR(assembly);
+            services.AddMediatR(typeof(IssueMerchCommandHandler));
         }
         
         private void AddDatabaseComponents(IServiceCollection services)

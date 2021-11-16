@@ -1,6 +1,6 @@
 ﻿using OzonEdu.MerchApi.Enums;
 
-namespace OzonEdu.MerchApi.Infrastructure.Commands.MerchIssue
+namespace OzonEdu.MerchApi.Infrastructure.Commands.IssueMerch.Responses
 {
     public class IssueMerchCommandResponse
     {

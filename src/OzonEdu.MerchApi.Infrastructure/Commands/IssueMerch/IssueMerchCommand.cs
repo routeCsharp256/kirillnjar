@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using OzonEdu.MerchApi.Infrastructure.Commands.MerchIssue;
+using OzonEdu.MerchApi.Infrastructure.Commands.IssueMerch.Responses;
 using OzonEdu.MerchApi.Infrastructure.Models;
 
 namespace OzonEdu.MerchApi.Infrastructure.Commands.IssueMerch
