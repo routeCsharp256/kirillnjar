@@ -76,17 +76,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
                 }, cancellationToken);
         }
 
-        public async Task<MerchRequest> CreateOrUpdateAsync(MerchRequest request, CancellationToken cancellationToken)
-        {
-            if (request.Id != default)
-            {
-                var result = _merchRequests.SingleOrDefault(_ => _.Id.Equals(request.Id));
-                if (result != default)
-                    return await UpdateAsync(request, cancellationToken);
-            }
-            return await CreateAsync(request, cancellationToken);
-        }
-
         public async Task<IReadOnlyList<MerchRequest>> GetAwaitingDeliveryByMerchPackAsync(int MerchPackId, CancellationToken cancellationToken)
         {
             return await Task.Run(() =>

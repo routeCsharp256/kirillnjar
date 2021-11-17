@@ -64,16 +64,17 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
 
             var merchRequest =
                 previousRequests.FirstOrDefault(_ => _.MerchRequestStatus.Equals(MerchRequestStatus.AwaitingDelivery))
-                ?? new MerchRequest(
-                    new Employee(
-                        new Email(request.Employee.Email)
-                        , new EmployeeFullName(request.Employee.FirstName, request.Employee.LastName, request.Employee.MiddleName))
-                    , merchPack.Id
-                    , new MerchRequestDateTime(DateTime.UtcNow)
-                    , new MerchRequestFrom(
-                        Enumeration
-                            .GetAll<MerchRequestFromType>()
-                            .FirstOrDefault(it => it.Id.Equals(request.FromType))));
+                ?? await _merchRequestRepository.CreateAsync(
+                    new MerchRequest(
+                        new Employee(
+                            new Email(request.Employee.Email)
+                            , new EmployeeFullName(request.Employee.FirstName, request.Employee.LastName, request.Employee.MiddleName))
+                        , merchPack.Id
+                        , new MerchRequestDateTime(DateTime.UtcNow)
+                        , new MerchRequestFrom(
+                            Enumeration
+                                .GetAll<MerchRequestFromType>()
+                                .FirstOrDefault(it => it.Id.Equals(request.FromType)))), cancellationToken);
 
             var isReservedSuccess = await _stockApiService
                 .TryReserve(merchPack.Items.ToDictionary(
@@ -97,7 +98,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
                     , cancellationToken);
             }
             
-            await _merchRequestRepository.CreateOrUpdateAsync(merchRequest, cancellationToken);
+            await _merchRequestRepository.UpdateAsync(merchRequest, cancellationToken);
             await _merchRequestUnitOfWork.SaveChangesAsync(cancellationToken);
             
             return new IssueMerchCommandResponse
