@@ -48,7 +48,12 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
                     , request.MerchPackTypeId
                     , cancellationToken);
 
-            if (previousRequests.Any(_ => _.IsIssuedLessYear(DateTime.UtcNow)))
+            
+            var merchPack = await _merchPackRepository.GetByTypeIdAsync(request.MerchPackTypeId, cancellationToken)
+                            ?? throw new MerchPackNotFoundException($"Merch pack with id {request.MerchPackTypeId} not found");
+            
+            if (previousRequests.Any(_ => _.IsIssuedLessYear(DateTime.UtcNow)
+                                          && _.MerchRequestStatus.Equals(MerchRequestStatus.Done)))
             {
                 return new IssueMerchCommandResponse
                 {
@@ -56,20 +61,19 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
                     StatusType = StatusType.AlreadyGiven,
                 };
             }
-            
-            var merchPack = await _merchPackRepository.GetByTypeIdAsync(request.MerchPackTypeId, cancellationToken)
-                ?? throw new MerchPackNotFoundException($"Merch pack with id {request.MerchPackTypeId} not found");
-            
-            var merchRequest = new MerchRequest(
-                new Employee(
-                    new Email(request.Employee.Email)
-                    , new EmployeeFullName(request.Employee.FirstName, request.Employee.LastName, request.Employee.MiddleName))
-                , merchPack.Id
-                , new MerchRequestDateTime(DateTime.UtcNow)
-                , new MerchRequestFrom(
-                    Enumeration
-                        .GetAll<MerchRequestFromType>()
-                        .FirstOrDefault(it => it.Id.Equals(request.FromType))));
+
+            var merchRequest =
+                previousRequests.FirstOrDefault(_ => _.MerchRequestStatus.Equals(MerchRequestStatus.AwaitingDelivery))
+                ?? new MerchRequest(
+                    new Employee(
+                        new Email(request.Employee.Email)
+                        , new EmployeeFullName(request.Employee.FirstName, request.Employee.LastName, request.Employee.MiddleName))
+                    , merchPack.Id
+                    , new MerchRequestDateTime(DateTime.UtcNow)
+                    , new MerchRequestFrom(
+                        Enumeration
+                            .GetAll<MerchRequestFromType>()
+                            .FirstOrDefault(it => it.Id.Equals(request.FromType))));
 
             var isReservedSuccess = await _stockApiService
                 .TryReserve(merchPack.Items.ToDictionary(
@@ -92,7 +96,8 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
                 await _mediator.Publish(new MerchPackReservationFailureDomainEvent(merchRequest)
                     , cancellationToken);
             }
-            await _merchRequestRepository.CreateAsync(merchRequest, cancellationToken);
+            
+            await _merchRequestRepository.CreateOrUpdateAsync(merchRequest, cancellationToken);
             await _merchRequestUnitOfWork.SaveChangesAsync(cancellationToken);
             
             return new IssueMerchCommandResponse

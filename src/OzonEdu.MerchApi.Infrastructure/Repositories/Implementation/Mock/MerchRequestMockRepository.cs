@@ -64,16 +64,27 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
 
         public async Task<MerchRequest> UpdateAsync(MerchRequest updatedItem, CancellationToken cancellationToken)
         {
-            if (updatedItem.Id == default(long))
+            if (updatedItem.Id == default)
                 throw new Exception($"for update id must have a value");
             return await Task.Run(() =>
                 {
                     var itemInCollection = _merchRequests.SingleOrDefault(_ => _.Id.Equals(updatedItem.Id));
                     var merchRequestsList = _merchRequests.ToList();
                     merchRequestsList.Remove(itemInCollection);
-                    _merchRequests = _merchRequests.Append(updatedItem).ToList();
+                    _merchRequests = merchRequestsList.Append(updatedItem).ToList();
                     return updatedItem;
                 }, cancellationToken);
+        }
+
+        public async Task<MerchRequest> CreateOrUpdateAsync(MerchRequest request, CancellationToken cancellationToken)
+        {
+            if (request.Id != default)
+            {
+                var result = _merchRequests.SingleOrDefault(_ => _.Id.Equals(request.Id));
+                if (result != default)
+                    return await UpdateAsync(request, cancellationToken);
+            }
+            return await CreateAsync(request, cancellationToken);
         }
 
         public async Task<IReadOnlyList<MerchRequest>> GetAwaitingDeliveryByMerchPackAsync(int MerchPackId, CancellationToken cancellationToken)

@@ -21,7 +21,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvent
         private readonly IMediator _mediator;
         
         public SupplyArrivedWithStockItemsDomainEventHandler(IMerchRequestRepository merchRequestRepository
-            , IEmailService emailService
             , IMerchPackRepository merchPackRepository
             , IUnitOfWork merchRequestUnitOfWork
             , IStockApiService stockApiService
