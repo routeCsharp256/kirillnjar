@@ -76,33 +76,24 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
                 }, cancellationToken);
         }
 
-        public async Task<IReadOnlyList<MerchRequest>> GetAwaitingDeliveryByMerchPackAsync(int MerchPackId, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<MerchRequest>> GetByMerchPackAndStatusAsync(int merchPackId, MerchRequestStatus status, CancellationToken cancellationToken)
         {
             return await Task.Run(() =>
             {
-                return _merchRequests.Where(_ => _.MerchRequestStatus.Equals(MerchRequestStatus.AwaitingDelivery))
+                return _merchRequests.Where(_ => _.MerchRequestStatus.Id.Equals(status.Id)
+                                                 && _.MerchPackId.Equals(merchPackId))
                     .ToList();
             }, cancellationToken);
         }
 
-        public async Task<IReadOnlyList<MerchRequest>> GetAwaitingDeliveryByEmployeeEmailAsync(Email employeeEmail, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<MerchRequest>> GetByEmployeeEmailAndStatusAsync(Email employeeEmail, MerchRequestStatus status,
+            CancellationToken cancellationToken)
         {
             return await Task.Run(() =>
             {
                 return _merchRequests.Where(_ => 
                         _.Employee.Email.Equals(employeeEmail)
-                        && _.MerchRequestStatus.Equals(MerchRequestStatus.AwaitingDelivery))
-                    .ToList();
-            }, cancellationToken);
-        }
-
-        public async Task<IReadOnlyList<MerchRequest>> GetDoneByEmployeeEmailAsync(Email employeeEmail, CancellationToken cancellationToken)
-        {
-            return await Task.Run(() =>
-            {
-                return _merchRequests.Where(_ => 
-                        _.Employee.Email.Equals(employeeEmail)
-                        && _.MerchRequestStatus.Equals(MerchRequestStatus.Done))
+                        && _.MerchRequestStatus.Id.Equals(status.Id))
                     .ToList();
             }, cancellationToken);
         }

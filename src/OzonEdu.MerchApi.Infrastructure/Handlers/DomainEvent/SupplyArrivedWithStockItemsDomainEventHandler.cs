@@ -39,8 +39,8 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvent
             foreach (var arrivedMerchPack in arrivedMerchPacks.OrderByDescending(_ => _.Id))
             {
                 var requests = await
-                    _merchRequestRepository.GetAwaitingDeliveryByMerchPackAsync(arrivedMerchPack.Type.Id,
-                        cancellationToken);
+                    _merchRequestRepository.GetByMerchPackAndStatusAsync(arrivedMerchPack.Type.Id,
+                        MerchRequestStatus.AwaitingDelivery, cancellationToken);
                 foreach (var request in requests.OrderBy(_ => _.MerchRequestDateTime.Value))
                 {
                     if (request.MerchRequestFrom.Id == MerchRequestFromType.Manually.Id)
