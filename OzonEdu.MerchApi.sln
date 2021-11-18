@@ -7,6 +7,7 @@ ProjectSection(SolutionItems) = preProject
 	.gitignore = .gitignore
 	README.md = README.md
 	dockerfile = dockerfile
+	entrypoint.sh = entrypoint.sh
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{05A14D32-9D16-4F23-9AC3-4F22BDC67DC1}"
@@ -34,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzonEdu.MerchApi.Enums", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzonEdu.MerchApi.Domain.Tests", "tests\OzonEdu.MerchApi.Domain.Tests\OzonEdu.MerchApi.Domain.Tests.csproj", "{B4C81612-B89A-4953-8DB7-98B02C9F3B13}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OzonEdu.MerchApi.Migrator", "src\OzonEdu.MerchApi.Migrator\OzonEdu.MerchApi.Migrator.csproj", "{9B2B1921-1550-4D1F-BD8B-92A8DE421A2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +52,7 @@ Global
 		{8411273A-F9DC-4877-B255-0D854F23E952} = {ED0D7A3F-CE39-4863-806F-01DC6237C7DA}
 		{7AE73E4D-0282-4F15-BC88-31CCEC7CFA19} = {ED0D7A3F-CE39-4863-806F-01DC6237C7DA}
 		{B4C81612-B89A-4953-8DB7-98B02C9F3B13} = {05A14D32-9D16-4F23-9AC3-4F22BDC67DC1}
+		{9B2B1921-1550-4D1F-BD8B-92A8DE421A2D} = {ED0D7A3F-CE39-4863-806F-01DC6237C7DA}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{871EFC6C-47CC-405E-A699-4260ED6809A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -87,5 +91,9 @@ Global
 		{B4C81612-B89A-4953-8DB7-98B02C9F3B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4C81612-B89A-4953-8DB7-98B02C9F3B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4C81612-B89A-4953-8DB7-98B02C9F3B13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B2B1921-1550-4D1F-BD8B-92A8DE421A2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B2B1921-1550-4D1F-BD8B-92A8DE421A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B2B1921-1550-4D1F-BD8B-92A8DE421A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B2B1921-1550-4D1F-BD8B-92A8DE421A2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
