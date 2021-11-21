@@ -35,11 +35,11 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvent
         
         public async Task Handle(SupplyArrivedWithStockItemsDomainEvent notification, CancellationToken cancellationToken)
         {
-            var arrivedMerchPacks = await _merchPackRepository.GetBySkusAsync(notification.Items.Keys.ToList(), cancellationToken);
+            var arrivedMerchPacks = await _merchPackRepository.GetBySkus(notification.Items.Keys.ToList(), cancellationToken);
             foreach (var arrivedMerchPack in arrivedMerchPacks.OrderByDescending(_ => _.Id))
             {
                 var requests = await
-                    _merchRequestRepository.GetByMerchPackAndStatusAsync(arrivedMerchPack.Type.Id,
+                    _merchRequestRepository.GetByMerchPackAndStatus(arrivedMerchPack.Type.Id,
                         MerchRequestStatus.AwaitingDelivery, cancellationToken);
                 foreach (var request in requests.OrderBy(_ => _.MerchRequestDateTime.Value))
                 {
@@ -63,7 +63,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvent
                         if (isReservedSuccess)
                         {
                             request.SetAsDone(new MerchRequestDateTime(DateTime.UtcNow));
-                            await _merchRequestRepository.UpdateAsync(request, cancellationToken);
+                            await _merchRequestRepository.Update(request, cancellationToken);
                             await _mediator.Publish(new MerchPackReservationSuccessDomainEvent(request)
                                 , cancellationToken);
                         }

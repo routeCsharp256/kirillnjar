@@ -22,7 +22,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
         public async Task<GetAllMerchPackByEmployeeQueryResponse> Handle(GetAllMerchPackByEmployeeQuery request, CancellationToken cancellationToken)
         {
             var givenMerch =
-                await _merchRequestRepository.GetByEmployeeEmailAndStatusAsync(new Email(request.Email), MerchRequestStatus.Done, cancellationToken);
+                await _merchRequestRepository.GetByEmployeeEmailAndStatus(new Email(request.Email), MerchRequestStatus.Done, cancellationToken);
             return new GetAllMerchPackByEmployeeQueryResponse
             {
                 Items = givenMerch.Select(_ =>

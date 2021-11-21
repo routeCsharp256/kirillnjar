@@ -51,13 +51,13 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
             };
         }
         
-        public async Task<MerchPack> GetByTypeIdAsync(int typeId, CancellationToken cancellationToken)
+        public async Task<MerchPack> GetByTypeId(int typeId, CancellationToken cancellationToken)
         {
             return await Task.Run(() 
                 => _merchPacks.SingleOrDefault(_ => _.Id.Equals(typeId)), cancellationToken);
         }
 
-        public async Task<IReadOnlyList<MerchPack>> GetBySkusAsync(IReadOnlyList<Sku> skus, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<MerchPack>> GetBySkus(IReadOnlyList<Sku> skus, CancellationToken cancellationToken)
         {
             return await Task.Run(() =>
             {

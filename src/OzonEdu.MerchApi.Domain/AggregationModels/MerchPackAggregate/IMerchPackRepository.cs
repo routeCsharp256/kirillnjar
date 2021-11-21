@@ -7,8 +7,8 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate
 {
     public interface IMerchPackRepository : IRepository<MerchItem>
     {
-        Task<MerchPack> GetByTypeIdAsync(int TypeId, CancellationToken cancellationToken);
+        Task<MerchPack> GetByTypeId(int typeId, CancellationToken cancellationToken);
 
-        Task<IReadOnlyList<MerchPack>> GetBySkusAsync(IReadOnlyList<Sku> skus, CancellationToken cancellationToken);
+        Task<IReadOnlyList<MerchPack>> GetBySkus(IReadOnlyList<Sku> skus, CancellationToken cancellationToken);
     }
 }

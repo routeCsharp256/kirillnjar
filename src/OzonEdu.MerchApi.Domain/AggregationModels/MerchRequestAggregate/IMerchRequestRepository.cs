@@ -8,10 +8,10 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate
 {
     public interface IMerchRequestRepository : IRepository<MerchRequest>
     {
-        Task<MerchRequest> CreateAsync(MerchRequest createdItem, CancellationToken cancellationToken);
-        Task<MerchRequest> UpdateAsync(MerchRequest updatedItem, CancellationToken cancellationToken);
-        Task<IReadOnlyList<MerchRequest>> GetByMerchPackAndStatusAsync(int merchPackId, MerchRequestStatus status, CancellationToken cancellationToken);
-        Task<IReadOnlyList<MerchRequest>> GetByEmployeeEmailAndStatusAsync(Email employeeEmail, MerchRequestStatus status, CancellationToken cancellationToken);
-        Task<IReadOnlyList<MerchRequest>> GetByEmployeeEmailAndMerchPackTypeAsync(Email employeeEmail, int merchPackTypeId, CancellationToken cancellationToken);
+        Task<MerchRequest> Create(MerchRequest createdItem, CancellationToken cancellationToken);
+        Task<MerchRequest> Update(MerchRequest updatedItem, CancellationToken cancellationToken);
+        Task<IReadOnlyList<MerchRequest>> GetByMerchPackAndStatus(int merchPackId, MerchRequestStatus status, CancellationToken cancellationToken);
+        Task<IReadOnlyList<MerchRequest>> GetByEmployeeEmailAndStatus(Email employeeEmail, MerchRequestStatus status, CancellationToken cancellationToken);
+        Task<IReadOnlyList<MerchRequest>> GetByEmployeeEmailAndMerchPackType(Email employeeEmail, int merchPackTypeId, CancellationToken cancellationToken);
     }
 }
