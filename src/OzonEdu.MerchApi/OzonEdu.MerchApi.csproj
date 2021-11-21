@@ -18,6 +18,7 @@
       <ProjectReference Include="..\OzonEdu.MerchApi.Grpc\OzonEdu.MerchApi.Grpc.csproj" />
       <ProjectReference Include="..\OzonEdu.MerchApi.HttpModels\OzonEdu.MerchApi.HttpModels.csproj" />
       <ProjectReference Include="..\OzonEdu.MerchApi.Infrastructure\OzonEdu.MerchApi.Infrastructure.csproj" />
+      <ProjectReference Include="..\OzonEdu.MerchApi.Services\OzonEdu.MerchApi.Services.csproj" />
     </ItemGroup>
 
 </Project>

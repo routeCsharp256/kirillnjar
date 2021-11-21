@@ -1,5 +1,6 @@
 using FluentValidation;
 using MediatR;
+using MediatR.Extensions.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate;
@@ -7,11 +8,10 @@ using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.Contracts;
 using OzonEdu.MerchApi.Domain.Services;
 using OzonEdu.MerchApi.GrpcServices;
-using OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate;
-using OzonEdu.MerchApi.Infrastructure.PipelineBehaviors.UnitOfWorkBehavior;
-using OzonEdu.MerchApi.Infrastructure.PipelineBehaviors.ValidationBehavior;
 using OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock;
 using OzonEdu.MerchApi.Infrastructure.Services.Implementation;
+using OzonEdu.MerchApi.Services.Handlers.MerchRequestAggregate;
+using OzonEdu.MerchApi.Services.PipelineBehaviors.UnitOfWorkBehavior;
 
 namespace OzonEdu.MerchApi
 {

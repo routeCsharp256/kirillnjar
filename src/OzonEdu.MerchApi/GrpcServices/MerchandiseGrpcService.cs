@@ -5,9 +5,9 @@ using Grpc.Core;
 using MediatR;
 using OzonEdu.MerchApi.Enums;
 using OzonEdu.MerchApi.Grpc;
-using OzonEdu.MerchApi.Infrastructure.Commands.IssueMerch;
-using OzonEdu.MerchApi.Infrastructure.Models;
-using OzonEdu.MerchApi.Infrastructure.Queries.MerchRequestAggregate;
+using OzonEdu.MerchApi.Services.Commands.IssueMerch;
+using OzonEdu.MerchApi.Services.Models;
+using OzonEdu.MerchApi.Services.Queries.MerchRequestAggregate;
 using StatusType = OzonEdu.MerchApi.Grpc.StatusType;
 
 namespace OzonEdu.MerchApi.GrpcServices
