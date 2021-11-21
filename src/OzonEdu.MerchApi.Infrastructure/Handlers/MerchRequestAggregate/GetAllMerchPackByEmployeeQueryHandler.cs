@@ -25,11 +25,11 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
                 await _merchRequestRepository.Get(new Email(request.Email), MerchRequestStatus.Done, cancellationToken);
             return new GetAllMerchPackByEmployeeQueryResponse
             {
-                Items = givenMerch.Select(_ =>
+                Items = givenMerch.Select(mr =>
                     new GivenMerchPackDTO
                     {
-                        DateGiven = _.MerchRequestDateTime.Value,
-                        MerchPackTypeId = _.MerchPackId
+                        DateGiven = mr.MerchRequestDateTime.Value,
+                        MerchPackTypeId = mr.MerchPackId
                     }).ToList()
             };
         }

@@ -57,10 +57,10 @@ namespace OzonEdu.MerchApi.GrpcServices
             {
                 MerchGiven = 
                     {
-                        result.Items.Select(_ => new GetEmployeeMerchByIdResponseUnit
+                        result.Items.Select(mp => new GetEmployeeMerchByIdResponseUnit
                         {
-                            TypeId = _.MerchPackTypeId,
-                            DateGiving = _.DateGiven.ToTimestamp()
+                            TypeId = mp.MerchPackTypeId,
+                            DateGiving = mp.DateGiven.ToTimestamp()
                         })
                         
                     }

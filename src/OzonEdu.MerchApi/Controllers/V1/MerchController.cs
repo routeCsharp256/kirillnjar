@@ -54,10 +54,10 @@ namespace OzonEdu.MerchApi.Controllers.V1
                 Email = employeeEmail
             }, token);
 
-            return result.Items.Select(_ => new MerchInfoResponse
+            return result.Items.Select(mp => new MerchInfoResponse
             {
-                TypeId = _.MerchPackTypeId,
-                DateGiving = _.DateGiven
+                TypeId = mp.MerchPackTypeId,
+                DateGiving = mp.DateGiven
             });
         }
     }

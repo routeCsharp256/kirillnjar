@@ -54,7 +54,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
         public async Task<MerchPack> Get(int typeId, CancellationToken cancellationToken)
         {
             return await Task.Run(() 
-                => _merchPacks.SingleOrDefault(_ => _.Id.Equals(typeId)), cancellationToken);
+                => _merchPacks.SingleOrDefault(mp => mp.Id.Equals(typeId)), cancellationToken);
         }
 
         public async Task<IReadOnlyList<MerchPack>> Get(IReadOnlyList<Sku> skus, CancellationToken cancellationToken)
@@ -64,7 +64,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
                 var result = new List<MerchPack>();
                 foreach (var merchPack in _merchPacks)
                 {
-                    var merchPackSkus = merchPack.Items.Keys.Select(_ => _.Sku);
+                    var merchPackSkus = merchPack.Items.Keys.Select(mi => mi.Sku);
                     if (skus.Intersect(merchPackSkus).Any())
                         result.Add(merchPack);
                 }

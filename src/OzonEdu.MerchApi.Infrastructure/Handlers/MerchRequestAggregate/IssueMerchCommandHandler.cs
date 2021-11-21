@@ -52,8 +52,8 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
             var merchPack = await _merchPackRepository.Get(request.MerchPackTypeId, cancellationToken)
                             ?? throw new MerchPackNotFoundException($"Merch pack with id {request.MerchPackTypeId} not found");
             
-            if (previousRequests.Any(_ => _.IsIssuedLessYear(DateTime.UtcNow)
-                                          && _.MerchRequestStatus.Equals(MerchRequestStatus.Done)))
+            if (previousRequests.Any(mr => mr.IsIssuedLessYear(DateTime.UtcNow)
+                                           && mr.MerchRequestStatus.Equals(MerchRequestStatus.Done)))
             {
                 return new IssueMerchCommandResponse
                 {
@@ -63,7 +63,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
             }
 
             var merchRequest =
-                previousRequests.FirstOrDefault(_ => _.MerchRequestStatus.Equals(MerchRequestStatus.AwaitingDelivery))
+                previousRequests.FirstOrDefault(mr => mr.MerchRequestStatus.Equals(MerchRequestStatus.AwaitingDelivery))
                 ?? await _merchRequestRepository.Create(
                     new MerchRequest(
                         new Employee(
