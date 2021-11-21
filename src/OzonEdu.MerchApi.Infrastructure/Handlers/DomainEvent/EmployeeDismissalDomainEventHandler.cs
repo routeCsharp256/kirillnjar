@@ -22,7 +22,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvent
         public async Task Handle(EmployeeDismissalDomainEvent notification, CancellationToken cancellationToken)
         {
             await _unitOfWork.StartTransaction(cancellationToken);
-            var requests = await _merchRequestRepository.Get(notification.Emlpoyee.Email,
+            var requests = await _merchRequestRepository.Get(notification.Employee.Email,
                 MerchRequestStatus.AwaitingDelivery, cancellationToken);
             foreach (var request in requests)
             {

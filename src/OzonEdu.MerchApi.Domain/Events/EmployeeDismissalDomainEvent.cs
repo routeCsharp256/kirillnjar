@@ -1,14 +1,16 @@
 ﻿using MediatR;
 using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate;
+using OzonEdu.MerchApi.Domain.Exceptions;
 
 namespace OzonEdu.MerchApi.Domain.Events
 {
     public class EmployeeDismissalDomainEvent : INotification
     {
-        public EmployeeDismissalDomainEvent(Employee employee, int merchTypeId)
+        public EmployeeDismissalDomainEvent(Employee employee)
         {
-            Emlpoyee = employee;
+            Employee = employee  ?? throw new RequiredEventPropertyIsNullException(nameof(employee),
+                $"{nameof(EmployeeDismissalDomainEvent)} can't be created without {nameof(employee)}");;
         }
-        public Employee Emlpoyee { get; private set; }
+        public Employee Employee { get; }
     }
 }
