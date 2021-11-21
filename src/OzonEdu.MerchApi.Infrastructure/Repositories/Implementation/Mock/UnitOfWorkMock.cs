@@ -12,7 +12,12 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
             return ValueTask.CompletedTask;
         }
 
-        public Task SaveChangesAsync(CancellationToken cancellationToken)
+        public Task SaveChanges(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task Rollback(CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }

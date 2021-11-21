@@ -1,36 +1,33 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
-using OzonEdu.MerchApi.Domain.Contracts;
 using OzonEdu.MerchApi.Domain.Events;
+using OzonEdu.MerchApi.Infrastructure.Commands.EmployeeDismissalCommand;
+using OzonEdu.MerchApi.Infrastructure.Models;
 
 namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvent
 {
     public class EmployeeDismissalDomainEventHandler : INotificationHandler<EmployeeDismissalDomainEvent>
     {
-        private readonly IMerchRequestRepository _merchRequestRepository;
-        private readonly IUnitOfWork _unitOfWork;
-        
-        public EmployeeDismissalDomainEventHandler(IMerchRequestRepository merchRequest, IUnitOfWork unitOfWork)
+        private readonly IMediator _mediator;
+      
+        public EmployeeDismissalDomainEventHandler(IMediator mediator)
         {
-            _merchRequestRepository = merchRequest;
-            _unitOfWork = unitOfWork;
+            _mediator = mediator;
         }
 
         public async Task Handle(EmployeeDismissalDomainEvent notification, CancellationToken cancellationToken)
         {
-            await _unitOfWork.StartTransaction(cancellationToken);
-            var requests = await _merchRequestRepository.Get(notification.Employee.Email,
-                MerchRequestStatus.AwaitingDelivery, cancellationToken);
-            foreach (var request in requests)
+            await _mediator.Send(new EmployeeDismissalCommand
             {
-                request.SetAsCanceled(MerchRequestDateTime.Create(DateTime.UtcNow));
-                await _merchRequestRepository.Update(request, cancellationToken);
-            }
-            
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+                Employee = new EmployeeDTO
+                {
+                    Email = notification.Employee.Email.Value,
+                    FirstName = notification.Employee.Name.FirstName.Value,
+                    LastName = notification.Employee.Name.LastName.Value,
+                    MiddleName = notification.Employee.Name.MiddleName.Value
+                }
+            }, cancellationToken);
         }
     }
 }

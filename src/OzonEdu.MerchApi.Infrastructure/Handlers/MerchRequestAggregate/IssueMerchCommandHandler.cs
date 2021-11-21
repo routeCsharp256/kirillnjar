@@ -7,7 +7,6 @@ using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate.EmployeeName;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
-using OzonEdu.MerchApi.Domain.Contracts;
 using OzonEdu.MerchApi.Domain.Events;
 using OzonEdu.MerchApi.Domain.Exceptions.MerchPackAggregate;
 using OzonEdu.MerchApi.Domain.Models;
@@ -15,34 +14,29 @@ using OzonEdu.MerchApi.Domain.Services;
 using OzonEdu.MerchApi.Enums;
 using OzonEdu.MerchApi.Infrastructure.Commands.IssueMerch;
 using OzonEdu.MerchApi.Infrastructure.Commands.IssueMerch.Responses;
-using OzonEdu.MerchApi.Infrastructure.Models;
 
 namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
 {
     public class IssueMerchCommandHandler : IRequestHandler<IssueMerchCommand, IssueMerchCommandResponse>
     {
         private readonly IMerchRequestRepository _merchRequestRepository;
-        private readonly IUnitOfWork _merchRequestUnitOfWork;
         private readonly IStockApiService _stockApiService;
         private readonly IMerchPackRepository _merchPackRepository;
         private readonly IMediator _mediator;
 
         public IssueMerchCommandHandler(IMerchRequestRepository merchRequestRepository
-            , IUnitOfWork merchRequestUnitOfWork
             , IMerchPackRepository merchPackRepository 
             , IStockApiService stockApiRepository
             , IMediator mediator)
         {
             _merchRequestRepository = merchRequestRepository;
             _merchPackRepository = merchPackRepository;
-            _merchRequestUnitOfWork = merchRequestUnitOfWork;
             _stockApiService = stockApiRepository;
             _mediator = mediator;
         }
 
         public async Task<IssueMerchCommandResponse> Handle(IssueMerchCommand request, CancellationToken cancellationToken)
         {
-            await _merchRequestUnitOfWork.StartTransaction(cancellationToken);
             var previousRequests =
                 await _merchRequestRepository.Get(
                     Email.Create(request.Employee.Email)
@@ -94,7 +88,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
             }
             
             await _merchRequestRepository.Update(merchRequest, cancellationToken);
-            await _merchRequestUnitOfWork.SaveChangesAsync(cancellationToken);
             
             return new IssueMerchCommandResponse
             {

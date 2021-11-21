@@ -8,6 +8,7 @@ using OzonEdu.MerchApi.Domain.Contracts;
 using OzonEdu.MerchApi.Domain.Services;
 using OzonEdu.MerchApi.GrpcServices;
 using OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate;
+using OzonEdu.MerchApi.Infrastructure.PipelineBehaviors.UnitOfWorkBehavior;
 using OzonEdu.MerchApi.Infrastructure.PipelineBehaviors.ValidationBehavior;
 using OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock;
 using OzonEdu.MerchApi.Infrastructure.Services.Implementation;
@@ -30,6 +31,7 @@ namespace OzonEdu.MerchApi
             services.AddMediatR(typeof(IssueMerchCommandHandler));
             services.AddValidatorsFromAssembly(typeof(IssueMerchCommandHandler).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkBehavior<,>));
         }
         
         private void AddDatabaseComponents(IServiceCollection services)

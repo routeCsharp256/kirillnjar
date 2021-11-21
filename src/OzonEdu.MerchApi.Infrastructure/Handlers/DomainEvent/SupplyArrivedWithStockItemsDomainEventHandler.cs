@@ -1,13 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
-using OzonEdu.MerchApi.Domain.Contracts;
 using OzonEdu.MerchApi.Domain.Events;
-using OzonEdu.MerchApi.Domain.Services;
+using OzonEdu.MerchApi.Infrastructure.Commands.IssueMerch;
 using OzonEdu.MerchApi.Infrastructure.Models;
 
 namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvent
@@ -16,20 +14,14 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvent
     {
         private readonly IMerchRequestRepository _merchRequestRepository;
         private readonly IMerchPackRepository _merchPackRepository;
-        private readonly IUnitOfWork _merchRequestUnitOfWork;
-        private readonly IStockApiService _stockApiService;
         private readonly IMediator _mediator;
         
         public SupplyArrivedWithStockItemsDomainEventHandler(IMerchRequestRepository merchRequestRepository
             , IMerchPackRepository merchPackRepository
-            , IUnitOfWork merchRequestUnitOfWork
-            , IStockApiService stockApiService
             , IMediator mediator)
         {
             _merchRequestRepository = merchRequestRepository;
             _merchPackRepository = merchPackRepository;
-            _merchRequestUnitOfWork = merchRequestUnitOfWork;
-            _stockApiService = stockApiService;
             _mediator = mediator;
         }
         
@@ -50,19 +42,19 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvent
                     }
                     else
                     {
-                        await _merchRequestUnitOfWork.StartTransaction(cancellationToken);
-                        var isReservedSuccess = await _stockApiService
-                            .TryReserve(arrivedMerchPack, cancellationToken);
-
-                        if (isReservedSuccess)
-                        {
-                            request.SetAsDone(MerchRequestDateTime.Create(DateTime.UtcNow));
-                            await _merchRequestRepository.Update(request, cancellationToken);
-                            await _mediator.Publish(new MerchPackReservationSuccessDomainEvent(request)
-                                , cancellationToken);
-                        }
-                        
-                        await _merchRequestUnitOfWork.SaveChangesAsync(cancellationToken);
+                        await _mediator.Send(new IssueMerchCommand
+                            {
+                                Employee = new EmployeeDTO
+                                {
+                                    Email = request.Employee.Email.Value,
+                                    FirstName = request.Employee.Name.FirstName.Value,
+                                    LastName = request.Employee.Name.LastName.Value,
+                                    MiddleName = request.Employee.Name.MiddleName.Value
+                                },
+                                FromType = request.MerchRequestFrom.Id,
+                                MerchPackTypeId = request.MerchPackId
+                            }
+                            , cancellationToken);
                     }
                 }
             }
