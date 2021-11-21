@@ -1,15 +1,14 @@
-using System;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.Contracts;
+using OzonEdu.MerchApi.Domain.Services;
 using OzonEdu.MerchApi.GrpcServices;
 using OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate;
 using OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock;
-using OzonEdu.MerchApi.Infrastructure.Services.Interfaces;
-using OzonEdu.MerchApi.Infrastructure.Services.Interfaces.Implementation;
+using OzonEdu.MerchApi.Infrastructure.Services.Implementation;
 
 namespace OzonEdu.MerchApi
 {

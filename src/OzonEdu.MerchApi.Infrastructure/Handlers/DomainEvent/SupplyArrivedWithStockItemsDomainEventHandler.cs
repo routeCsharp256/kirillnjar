@@ -7,8 +7,8 @@ using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.Contracts;
 using OzonEdu.MerchApi.Domain.Events;
+using OzonEdu.MerchApi.Domain.Services;
 using OzonEdu.MerchApi.Infrastructure.Models;
-using OzonEdu.MerchApi.Infrastructure.Services.Interfaces;
 
 namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvent
 {
@@ -52,13 +52,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvent
                     {
                         await _merchRequestUnitOfWork.StartTransaction(cancellationToken);
                         var isReservedSuccess = await _stockApiService
-                            .TryReserve(arrivedMerchPack.Items.ToDictionary(
-                                _ => new MerchItemDTO
-                                {
-                                    Sku = _.Key.Sku.Value
-                                }
-                                , _ => _.Value.Value
-                            ), cancellationToken);
+                            .TryReserve(arrivedMerchPack, cancellationToken);
 
                         if (isReservedSuccess)
                         {

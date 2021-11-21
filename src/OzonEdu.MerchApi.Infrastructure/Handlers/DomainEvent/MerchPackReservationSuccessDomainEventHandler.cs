@@ -3,9 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.Events;
-using OzonEdu.MerchApi.Enums;
-using OzonEdu.MerchApi.Infrastructure.Models;
-using OzonEdu.MerchApi.Infrastructure.Services.Interfaces;
+using OzonEdu.MerchApi.Domain.Services;
 
 namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvent
 {
@@ -22,18 +20,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvent
         {
             if (notification.MerchRequest.MerchRequestFrom.Id == MerchRequestFromType.Automatically.Id)
             {
-                await _emailService.Send(new EmployeeNotificationEventDTO
-                {
-                    EmployeeEmail = notification.MerchRequest.Employee.Email.Value,
-                    EmployeeName = $"{notification.MerchRequest.Employee.Name.LastName} " +
-                                   $"{notification.MerchRequest.Employee.Name.FirstName} " +
-                                   $"{notification.MerchRequest.Employee.Name.MiddleName} ",
-                    EventType = EmployeeEventType.MerchDelivery,
-                    Payload = new Payload()
-                    {
-                        MerchType = notification.MerchRequest.MerchPackId
-                    }
-                }, cancellationToken);
+                await _emailService.Send(notification, cancellationToken);
             }
         }
     }

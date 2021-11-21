@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using OzonEdu.MerchApi.Infrastructure.Models;
+using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate;
+using OzonEdu.MerchApi.Domain.Services;
 
-namespace OzonEdu.MerchApi.Infrastructure.Services.Interfaces.Implementation
+namespace OzonEdu.MerchApi.Infrastructure.Services.Implementation
 {
     public class StockApiMockService: IStockApiService
     {
@@ -33,18 +34,18 @@ namespace OzonEdu.MerchApi.Infrastructure.Services.Interfaces.Implementation
             };
         }
 
-        public async Task<bool> TryReserve(IReadOnlyDictionary<MerchItemDTO, int> items, CancellationToken cancellationToken)
+        public async Task<bool> TryReserve(MerchPack merchPack, CancellationToken cancellationToken)
         {
             return await Task.Run(() =>
             {
-                foreach (var merchItem in items.Keys)
+                foreach (var merchItem in merchPack.Items.Keys)
                 {
-                    if (!_stockItems.TryGetValue(merchItem.Sku, out var stockQuantity))
+                    if (!_stockItems.TryGetValue(merchItem.Sku.Value, out var stockQuantity))
                     {
                         return false;
                     }
 
-                    if (stockQuantity < items[merchItem])
+                    if (stockQuantity < merchPack.Items[merchItem].Value)
                     {
                         return false;
                     }
