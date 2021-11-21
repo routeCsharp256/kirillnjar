@@ -15,10 +15,10 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchPackAggregate
             var type = MerchPackType.WelcomePack;
             var items = new Dictionary<MerchItem, MerchItemsQuantity>
             {
-                {new MerchItem(1, new Sku(1)), new MerchItemsQuantity(1)},
-                {new MerchItem(2, new Sku(2)), new MerchItemsQuantity(1)},
-                {new MerchItem(3, new Sku(3)), new MerchItemsQuantity(1)},
-                {new MerchItem(4, new Sku(4)), new MerchItemsQuantity(2)}
+                {new MerchItem(1, Sku.Create(1)), MerchItemsQuantity.Create(1)},
+                {new MerchItem(2, Sku.Create(2)), MerchItemsQuantity.Create(1)},
+                {new MerchItem(3, Sku.Create(3)), MerchItemsQuantity.Create(1)},
+                {new MerchItem(4, Sku.Create(4)), MerchItemsQuantity.Create(2)}
             };
         
 
@@ -38,10 +38,10 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchPackAggregate
             //Arrange 
             var items = new Dictionary<MerchItem, MerchItemsQuantity>
             {
-                {new MerchItem(1, new Sku(1)), new MerchItemsQuantity(1)},
-                {new MerchItem(2, new Sku(2)), new MerchItemsQuantity(1)},
-                {new MerchItem(3, new Sku(3)), new MerchItemsQuantity(1)},
-                {new MerchItem(4, new Sku(4)), new MerchItemsQuantity(2)}
+                {new MerchItem(1, Sku.Create(1)), MerchItemsQuantity.Create(1)},
+                {new MerchItem(2, Sku.Create(2)), MerchItemsQuantity.Create(1)},
+                {new MerchItem(3, Sku.Create(3)), MerchItemsQuantity.Create(1)},
+                {new MerchItem(4, Sku.Create(4)), MerchItemsQuantity.Create(2)}
             };
             //Act
 

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate;
+using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate.EmployeeName;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.Contracts;
@@ -44,7 +45,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
             await _merchRequestUnitOfWork.StartTransaction(cancellationToken);
             var previousRequests =
                 await _merchRequestRepository.Get(
-                    new Email(request.Employee.Email)
+                    Email.Create(request.Employee.Email)
                     , request.MerchPackTypeId
                     , cancellationToken);
 
@@ -67,10 +68,10 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
                 ?? await _merchRequestRepository.Create(
                     new MerchRequest(
                         new Employee(
-                            new Email(request.Employee.Email)
-                            , new EmployeeFullName(request.Employee.FirstName, request.Employee.LastName, request.Employee.MiddleName))
+                            Email.Create(request.Employee.Email)
+                            , FullName.Create(request.Employee.FirstName, request.Employee.LastName, request.Employee.MiddleName))
                         , merchPack.Id
-                        , new MerchRequestDateTime(DateTime.UtcNow)
+                        , MerchRequestDateTime.Create(DateTime.UtcNow)
                         , new MerchRequestFrom(
                             Enumeration
                                 .GetAll<MerchRequestFromType>()
@@ -81,13 +82,13 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
 
             if (isReservedSuccess)
             {
-                merchRequest.SetAsDone(new MerchRequestDateTime(DateTime.UtcNow));
+                merchRequest.SetAsDone(MerchRequestDateTime.Create(DateTime.UtcNow));
                 await _mediator.Publish(new MerchPackReservationSuccessDomainEvent(merchRequest)
                     , cancellationToken);
             }
             else
             {
-                merchRequest.SetAsAwaitingDelivery(new MerchRequestDateTime(DateTime.UtcNow));
+                merchRequest.SetAsAwaitingDelivery(MerchRequestDateTime.Create(DateTime.UtcNow));
                 await _mediator.Publish(new MerchPackReservationFailureDomainEvent(merchRequest)
                     , cancellationToken);
             }

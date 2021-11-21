@@ -1,10 +1,11 @@
 ﻿using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate;
+using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate.EmployeeName;
 using OzonEdu.MerchApi.Domain.Exceptions.EmployeeAggregate;
 using Xunit;
 
 namespace OzonEdu.MerchApi.Domain.Tests.EmployeeAggregate
 {
-    public class EmployeeFullNameValueObjectTests
+    public class FullNameValueObjectTests
     {
         [Theory]
         [InlineData("ivanov", "ivan", "ivanovich")]
@@ -17,12 +18,12 @@ namespace OzonEdu.MerchApi.Domain.Tests.EmployeeAggregate
             //Arrange 
 
             //Act
-            var fullName = new EmployeeFullName(lastName, firstName, middleName);
+            var fullName = FullName.Create(lastName, firstName, middleName);
 
             //Assert  
-            Assert.Equal(fullName.FirstName, firstName);
-            Assert.Equal(fullName.LastName, lastName);
-            Assert.Equal(fullName.MiddleName, middleName);
+            Assert.Equal(fullName.FirstName.Value, firstName);
+            Assert.Equal(fullName.LastName.Value, lastName);
+            Assert.Equal(fullName.MiddleName.Value, middleName);
         }
         
         
@@ -46,7 +47,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.EmployeeAggregate
             //Act
 
             //Assert  
-            Assert.Throws<InvalidNameException>(() => new EmployeeFullName(lastName, firstName, middleName));
+            Assert.Throws<InvalidNameException>(() => FullName.Create(lastName, firstName, middleName));
         }
     }
 }

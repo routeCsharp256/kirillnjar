@@ -1,3 +1,4 @@
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +8,7 @@ using OzonEdu.MerchApi.Domain.Contracts;
 using OzonEdu.MerchApi.Domain.Services;
 using OzonEdu.MerchApi.GrpcServices;
 using OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate;
+using OzonEdu.MerchApi.Infrastructure.PipelineBehaviors.ValidationBehavior;
 using OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock;
 using OzonEdu.MerchApi.Infrastructure.Services.Implementation;
 
@@ -24,8 +26,10 @@ namespace OzonEdu.MerchApi
         
 
         private static void AddMediator(IServiceCollection services)
-        {    
+        {
             services.AddMediatR(typeof(IssueMerchCommandHandler));
+            services.AddValidatorsFromAssembly(typeof(IssueMerchCommandHandler).Assembly);
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         }
         
         private void AddDatabaseComponents(IServiceCollection services)

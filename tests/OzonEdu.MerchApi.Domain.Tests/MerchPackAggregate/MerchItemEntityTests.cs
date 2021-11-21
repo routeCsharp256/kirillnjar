@@ -14,7 +14,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchPackAggregate
         public void CreateMerchItemSuccess(long sku)
         {
             //Arrange 
-            var testSku = new Sku(sku);
+            var testSku = Sku.Create(sku);
             
             //Act
             var merchItem = new MerchItem(testSku);

@@ -56,7 +56,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvent
 
                         if (isReservedSuccess)
                         {
-                            request.SetAsDone(new MerchRequestDateTime(DateTime.UtcNow));
+                            request.SetAsDone(MerchRequestDateTime.Create(DateTime.UtcNow));
                             await _merchRequestRepository.Update(request, cancellationToken);
                             await _mediator.Publish(new MerchPackReservationSuccessDomainEvent(request)
                                 , cancellationToken);

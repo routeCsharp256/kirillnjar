@@ -6,13 +6,18 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate
 {
     public class MerchItemsQuantity : ValueObject
     {
-        public MerchItemsQuantity(int value)
+        private MerchItemsQuantity(int value)
         {
-            if (value <= 0)
-                throw new InvalidQuantityException($"Merch items quantity can't be lower then 1");
             Value = value;
         }
 
+        public static MerchItemsQuantity Create(int quantity)
+        {
+            if (quantity <= 0)
+                throw new InvalidQuantityException($"Merch items quantity can't be lower then 1");
+            return new MerchItemsQuantity(quantity);
+        }
+        
         public int Value { get; }
 
         protected override IEnumerable<object> GetEqualityComponents()

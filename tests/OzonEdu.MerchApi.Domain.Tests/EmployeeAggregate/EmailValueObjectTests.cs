@@ -17,7 +17,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.EmployeeAggregate
             //Arrange 
 
             //Act
-            var email = new Email(emailValue);
+            var email = Email.Create(emailValue);
 
             //Assert  
             Assert.Equal(email.Value, emailValue);
@@ -35,7 +35,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.EmployeeAggregate
             //Act
 
             //Assert  
-            Assert.Throws<InvalidEmailException>(() => new Email(emailValue));
+            Assert.Throws<InvalidEmailException>(() => Email.Create(emailValue));
         }
     }
 }

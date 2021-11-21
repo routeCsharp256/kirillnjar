@@ -16,7 +16,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchPackAggregate
             //Arrange 
 
             //Act
-            var testQuantity = new MerchItemsQuantity(quantity);
+            var testQuantity = MerchItemsQuantity.Create(quantity);
 
             //Assert  
             Assert.Equal(testQuantity.Value, quantity);
@@ -33,7 +33,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchPackAggregate
             //Act
 
             //Assert  
-            Assert.Throws<InvalidQuantityException>(() => new MerchItemsQuantity(quantity));
+            Assert.Throws<InvalidQuantityException>(() => MerchItemsQuantity.Create(quantity));
         }
     }
 }

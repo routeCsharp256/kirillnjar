@@ -1,4 +1,5 @@
 using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate;
+using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate.EmployeeName;
 using OzonEdu.MerchApi.Domain.Exceptions;
 using Xunit;
 
@@ -15,17 +16,17 @@ namespace OzonEdu.MerchApi.Domain.Tests.EmployeeAggregate
         public void CreateEmployeeSuccess(string email, string lastName, string firstName, string middleName)
         {
             //Arrange 
-            var testEmail = new Email(email);
-            var testFullName = new EmployeeFullName(lastName, firstName, middleName);
+            var testEmail = Email.Create(email);
+            var testFullName = FullName.Create(lastName, firstName, middleName);
             
             //Act
             var employee = new Employee(testEmail, testFullName);
 
             //Assert  
             Assert.Equal(employee.Email.Value, email);
-            Assert.Equal(employee.Name.FirstName, firstName);
-            Assert.Equal(employee.Name.LastName, lastName);
-            Assert.Equal(employee.Name.MiddleName, middleName);
+            Assert.Equal(employee.Name.FirstName.Value, firstName);
+            Assert.Equal(employee.Name.LastName.Value, lastName);
+            Assert.Equal(employee.Name.MiddleName.Value, middleName);
         }
         
         
@@ -33,7 +34,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.EmployeeAggregate
         public void CreateEmployeeWithNullEmail()
         {
             //Arrange 
-            var testFullName = new EmployeeFullName("ivanov", "ivan", "ivanovich");
+            var testFullName = FullName.Create("ivanov", "ivan", "ivanovich");
             
             //Act
 
@@ -45,7 +46,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.EmployeeAggregate
         public void CreateEmployeeWithNullName()
         {
             //Arrange 
-            var testEmail = new Email("iivanov@mail.com");
+            var testEmail = Email.Create("iivanov@mail.com");
             
             //Act
 

@@ -8,11 +8,16 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate
     {
         public long Value { get; }
         
-        public Sku(long sku)
+        private Sku(long sku)
+        {
+            Value = sku;
+        }
+        
+        public static Sku Create(long sku)
         {
             if (sku <= 0)
                 throw new InvalidSkuException("Sku value must be positive");
-            Value = sku;
+            return new Sku(sku);
         }
         
         protected override IEnumerable<object> GetEqualityComponents()

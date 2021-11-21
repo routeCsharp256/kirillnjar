@@ -5,16 +5,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\OzonEdu.MerchApi.Domain\OzonEdu.MerchApi.Domain.csproj" />
-      <ProjectReference Include="..\OzonEdu.MerchApi.Enums\OzonEdu.MerchApi.Enums.csproj" />
+        <ProjectReference Include="..\OzonEdu.MerchApi.Domain\OzonEdu.MerchApi.Domain.csproj" />
+        <ProjectReference Include="..\OzonEdu.MerchApi.Enums\OzonEdu.MerchApi.Enums.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="MediatR" Version="9.0.0" />
+        <PackageReference Include="MediatR" Version="9.0.0" />
+        <PackageReference Include="MediatR.Extensions.FluentValidation.AspNetCore" Version="1.2.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Handlers\MerchPackAggregate" />
+        <Folder Include="Handlers\MerchPackAggregate" />
     </ItemGroup>
 
 </Project>

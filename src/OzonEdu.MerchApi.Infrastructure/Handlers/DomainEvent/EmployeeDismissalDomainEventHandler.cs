@@ -26,7 +26,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvent
                 MerchRequestStatus.AwaitingDelivery, cancellationToken);
             foreach (var request in requests)
             {
-                request.SetAsCanceled(new MerchRequestDateTime(DateTime.UtcNow));
+                request.SetAsCanceled(MerchRequestDateTime.Create(DateTime.UtcNow));
                 await _merchRequestRepository.Update(request, cancellationToken);
             }
             

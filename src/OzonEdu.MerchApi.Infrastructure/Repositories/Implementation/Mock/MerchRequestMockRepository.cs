@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate;
+using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate.EmployeeName;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 
 namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
@@ -23,24 +24,24 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
             _merchRequests = new List<MerchRequest>
             {
                 new(1, new Employee(
-                        new Email("iivanov@mail.com"),
-                        new EmployeeFullName("Ivan", "Ivanov", "Ivanovich")),
+                        Email.Create("iivanov@mail.com"),
+                        FullName.Create("Ivan", "Ivanov", "Ivanovich")),
                     1,
-                    new MerchRequestDateTime(DateTime.ParseExact("21.12.2020", "dd.MM.yyyy", CultureInfo.InvariantCulture)),
+                    MerchRequestDateTime.Create(DateTime.ParseExact("21.12.2020", "dd.MM.yyyy", CultureInfo.InvariantCulture)),
                     MerchRequestStatus.Done,
                     new MerchRequestFrom(MerchRequestFromType.Automatically)),
                 new(2, new Employee(
-                        new Email("ppetrov@mail.com"),
-                        new EmployeeFullName("Petr", "Petrov", "Petrovich")),
+                        Email.Create("ppetrov@mail.com"),
+                        FullName.Create("Petr", "Petrov", "Petrovich")),
                     2,
-                    new MerchRequestDateTime(DateTime.ParseExact("22.12.2020", "dd.MM.yyyy", CultureInfo.InvariantCulture)),
+                    MerchRequestDateTime.Create(DateTime.ParseExact("22.12.2020", "dd.MM.yyyy", CultureInfo.InvariantCulture)),
                     MerchRequestStatus.AwaitingDelivery,
                     new MerchRequestFrom(MerchRequestFromType.Manually)),
                 new(3, new Employee(
-                        new Email("aivanova@mail.com"),
-                        new EmployeeFullName("Anna", "Ivanova", "Ivanovna")),
+                        Email.Create("aivanova@mail.com"),
+                        FullName.Create("Anna", "Ivanova", "Ivanovna")),
                     5,
-                    new MerchRequestDateTime(DateTime.ParseExact("23.12.2020", "dd.MM.yyyy", CultureInfo.InvariantCulture)),
+                    MerchRequestDateTime.Create(DateTime.ParseExact("23.12.2020", "dd.MM.yyyy", CultureInfo.InvariantCulture)),
                     MerchRequestStatus.Canceled,
                     new MerchRequestFrom(MerchRequestFromType.Manually))
             };
@@ -50,7 +51,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
         {
             return await Task.Run(() =>
                 {
-                    var newId = _merchRequests.Max(mr => mr.Id) + 1;
+                    var newId = _merchRequests.Max(_ => _.Id) + 1;
                     var newItem = new MerchRequest(newId,
                         createdItem.Employee,
                         createdItem.MerchPackId,
@@ -68,7 +69,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
                 throw new Exception($"for update id must have a value");
             return await Task.Run(() =>
                 {
-                    var itemInCollection = _merchRequests.SingleOrDefault(mr => mr.Id.Equals(updatedItem.Id));
+                    var itemInCollection = _merchRequests.SingleOrDefault(_ => _.Id.Equals(updatedItem.Id));
                     var merchRequestsList = _merchRequests.ToList();
                     merchRequestsList.Remove(itemInCollection);
                     _merchRequests = merchRequestsList.Append(updatedItem).ToList();
@@ -80,8 +81,8 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
         {
             return await Task.Run(() =>
             {
-                return _merchRequests.Where(mr => mr.MerchRequestStatus.Id.Equals(status.Id)
-                                                  && mr.MerchPackId.Equals(merchPackId))
+                return _merchRequests.Where(_ => _.MerchRequestStatus.Id.Equals(status.Id)
+                                                 && _.MerchPackId.Equals(merchPackId))
                     .ToList();
             }, cancellationToken);
         }
@@ -91,9 +92,9 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
         {
             return await Task.Run(() =>
             {
-                return _merchRequests.Where(mr => 
-                        mr.Employee.Email.Equals(employeeEmail)
-                        && mr.MerchRequestStatus.Id.Equals(status.Id))
+                return _merchRequests.Where(_ => 
+                        _.Employee.Email.Equals(employeeEmail)
+                        && _.MerchRequestStatus.Id.Equals(status.Id))
                     .ToList();
             }, cancellationToken);
         }
@@ -103,9 +104,9 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
         {
             return await Task.Run(() =>
             {
-                return _merchRequests.Where(mr =>
-                        mr.Employee.Email.Equals(employeeEmail)
-                        && mr.MerchPackId.Equals(merchPackTypeId))
+                return _merchRequests.Where(_ =>
+                        _.Employee.Email.Equals(employeeEmail)
+                        && _.MerchPackId.Equals(merchPackTypeId))
                     .ToList();
             }, cancellationToken);
         }
