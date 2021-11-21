@@ -11,7 +11,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchPackAggregate
         [InlineData(1)]
         [InlineData(5)]
         [InlineData(6)]
-        public void MerchItemQuantitySuccess(int quantity)
+        public void Constructor_WhenQuantityValid_DoesNotThrow(int quantity)
         {
             //Arrange 
 
@@ -27,7 +27,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchPackAggregate
         [InlineData(0)]
         [InlineData(-1)]
         [InlineData(-6)]
-        public void MerchItemQuantityNotSuccess(int quantity)
+        public void Constructor_WhenQuantityInvalid_Throw(int quantity)
         {
             //Arrange 
             //Act

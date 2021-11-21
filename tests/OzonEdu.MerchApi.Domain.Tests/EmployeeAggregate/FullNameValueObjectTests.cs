@@ -13,7 +13,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.EmployeeAggregate
         [InlineData("Харитонов", "Кондрат", "Антонович")]
         [InlineData("Быков", "Игорь", "Олегович")]
         [InlineData("Григорьев", "Исак", null)]
-        public void CreateEmployeeFullNameSuccess(string lastName, string firstName, string middleName)
+        public void Constructor_WhenFullNameValid_DoesNotThrow(string lastName, string firstName, string middleName)
         {
             //Arrange 
 
@@ -41,7 +41,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.EmployeeAggregate
         [InlineData("Харитонов", "Иван", "Антонович ")]
         [InlineData("Харитонов", "Иван", "Антон ович")]
         [InlineData("Харитонов", "Иван", "123123")]
-        public void CreateEmployeeFullNameNotSuccess(string lastName, string firstName, string middleName)
+        public void Constructor_WhenFullNameInvalid_Throw(string lastName, string firstName, string middleName)
         {
             //Arrange 
             //Act

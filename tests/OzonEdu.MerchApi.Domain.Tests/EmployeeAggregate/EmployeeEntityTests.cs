@@ -13,7 +13,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.EmployeeAggregate
         [InlineData("3espen.stirlin@osmye.com", "Харитонов", "Кондрат", "Антонович")]
         [InlineData("9kame@zipsq.site", "Быков", "Игорь", "Олегович")]
         [InlineData("lnicolas.kiikan5@sauhasc.com", "Григорьев", "Исак", null)]
-        public void CreateEmployeeSuccess(string email, string lastName, string firstName, string middleName)
+        public void Constructor_WhenEmployeeValid_DoesNotThrow(string email, string lastName, string firstName, string middleName)
         {
             //Arrange 
             var testEmail = Email.Create(email);
@@ -31,7 +31,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.EmployeeAggregate
         
         
         [Fact]
-        public void CreateEmployeeWithNullEmail()
+        public void Constructor_WhenEmployeeEmailNull_Throw()
         {
             //Arrange 
             var testFullName = FullName.Create("ivanov", "ivan", "ivanovich");
@@ -43,7 +43,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.EmployeeAggregate
         }
         
         [Fact]
-        public void CreateEmployeeWithNullName()
+        public void Constructor_WhenEmployeeNameNull_Throw()
         {
             //Arrange 
             var testEmail = Email.Create("iivanov@mail.com");

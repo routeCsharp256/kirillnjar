@@ -9,7 +9,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchPackAggregate
     {
 
         [Fact]
-        public void CreateMerchPackSuccess()
+        public void Constructor_WhenMerchPackValid_DoesNotThrow()
         {
             //Arrange 
             var type = MerchPackType.WelcomePack;
@@ -33,7 +33,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchPackAggregate
         
         
         [Fact]
-        public void CreateMerchPackWithNullType()
+        public void Constructor_WhenMerchPackTypeNull_Throw()
         {
             //Arrange 
             var items = new Dictionary<MerchItem, MerchItemsQuantity>
@@ -50,7 +50,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchPackAggregate
         }
         
         [Fact]
-        public void CreateMerchPackWithNullItems()
+        public void Constructor_WhenMerchPackItemsNull_Throw()
         {
             //Arrange 
             var type = MerchPackType.WelcomePack;
