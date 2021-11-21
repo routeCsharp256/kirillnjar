@@ -1,6 +1,4 @@
-﻿using OzonEdu.MerchApi.Domain.Exceptions.EmployeeAggregate;
-
-namespace OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate.EmployeeName
+﻿namespace OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate.EmployeeName
 {
     public sealed class MiddleName : EmployeeName
     {

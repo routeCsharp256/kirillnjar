@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using OzonEdu.MerchApi.Domain.Exceptions.EmployeeAggregate;
+using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate.EmployeeName;
 using OzonEdu.MerchApi.Domain.Models;
 
-namespace OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate.EmployeeName
+namespace OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate
 {
     public class FullName : ValueObject
     {

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using OzonEdu.MerchApi.Domain.Exceptions.EmployeeAggregate;
 using OzonEdu.MerchApi.Domain.Models;

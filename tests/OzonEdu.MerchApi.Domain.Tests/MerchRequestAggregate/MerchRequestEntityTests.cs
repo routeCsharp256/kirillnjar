@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate;
-using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate.EmployeeName;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.Exceptions;
 using OzonEdu.MerchApi.Domain.Exceptions.MerchRequestAggregate;

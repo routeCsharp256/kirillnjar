@@ -1,5 +1,4 @@
-﻿using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate.EmployeeName;
-using OzonEdu.MerchApi.Domain.Exceptions;
+﻿using OzonEdu.MerchApi.Domain.Exceptions;
 using OzonEdu.MerchApi.Domain.Models;
 
 namespace OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate
