@@ -5,6 +5,6 @@ namespace OzonEdu.MerchApi.Services.Queries.MerchRequestAggregate.Responses
 {
     public class GetAllMerchPackByEmployeeQueryResponse
     {
-        public IReadOnlyList<GivenMerchPackDTO> Items { get; set; }
+        public IReadOnlyList<GivenMerchPackDTO> Items { get; init; }
     }
 }
