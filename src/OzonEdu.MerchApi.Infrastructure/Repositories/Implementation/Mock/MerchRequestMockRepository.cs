@@ -76,7 +76,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
                 }, cancellationToken);
         }
 
-        public async Task<IReadOnlyList<MerchRequest>> GetByMerchPackAndStatus(int merchPackId, MerchRequestStatus status, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<MerchRequest>> Get(int merchPackId, MerchRequestStatus status, CancellationToken cancellationToken)
         {
             return await Task.Run(() =>
             {
@@ -86,7 +86,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
             }, cancellationToken);
         }
 
-        public async Task<IReadOnlyList<MerchRequest>> GetByEmployeeEmailAndStatus(Email employeeEmail, MerchRequestStatus status,
+        public async Task<IReadOnlyList<MerchRequest>> Get(Email employeeEmail, MerchRequestStatus status,
             CancellationToken cancellationToken)
         {
             return await Task.Run(() =>
@@ -98,7 +98,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
             }, cancellationToken);
         }
 
-        public async Task<IReadOnlyList<MerchRequest>> GetByEmployeeEmailAndMerchPackType(Email employeeEmail, int merchPackTypeId,
+        public async Task<IReadOnlyList<MerchRequest>> Get(Email employeeEmail, int merchPackTypeId,
             CancellationToken cancellationToken)
         {
             return await Task.Run(() =>

@@ -35,11 +35,11 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.DomainEvent
         
         public async Task Handle(SupplyArrivedWithStockItemsDomainEvent notification, CancellationToken cancellationToken)
         {
-            var arrivedMerchPacks = await _merchPackRepository.GetBySkus(notification.Items.Keys.ToList(), cancellationToken);
+            var arrivedMerchPacks = await _merchPackRepository.Get(notification.Items.Keys.ToList(), cancellationToken);
             foreach (var arrivedMerchPack in arrivedMerchPacks.OrderByDescending(_ => _.Id))
             {
                 var requests = await
-                    _merchRequestRepository.GetByMerchPackAndStatus(arrivedMerchPack.Type.Id,
+                    _merchRequestRepository.Get(arrivedMerchPack.Type.Id,
                         MerchRequestStatus.AwaitingDelivery, cancellationToken);
                 foreach (var request in requests.OrderBy(_ => _.MerchRequestDateTime.Value))
                 {

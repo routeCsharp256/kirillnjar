@@ -43,13 +43,13 @@ namespace OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate
         {
             await _merchRequestUnitOfWork.StartTransaction(cancellationToken);
             var previousRequests =
-                await _merchRequestRepository.GetByEmployeeEmailAndMerchPackType(
+                await _merchRequestRepository.Get(
                     new Email(request.Employee.Email)
                     , request.MerchPackTypeId
                     , cancellationToken);
 
             
-            var merchPack = await _merchPackRepository.GetByTypeId(request.MerchPackTypeId, cancellationToken)
+            var merchPack = await _merchPackRepository.Get(request.MerchPackTypeId, cancellationToken)
                             ?? throw new MerchPackNotFoundException($"Merch pack with id {request.MerchPackTypeId} not found");
             
             if (previousRequests.Any(_ => _.IsIssuedLessYear(DateTime.UtcNow)
