@@ -1,5 +1,6 @@
-using System;
+using FluentValidation;
 using MediatR;
+using MediatR.Extensions.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,15 +8,16 @@ using Npgsql;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.Contracts;
+using OzonEdu.MerchApi.Domain.Services;
 using OzonEdu.MerchApi.GrpcServices;
 using OzonEdu.MerchApi.Infrastructure.Configuration;
-using OzonEdu.MerchApi.Infrastructure.Handlers.MerchRequestAggregate;
 using OzonEdu.MerchApi.Infrastructure.Repositories.Implementation;
 using OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock;
 using OzonEdu.MerchApi.Infrastructure.Repositories.Infrastructure;
 using OzonEdu.MerchApi.Infrastructure.Repositories.Infrastructure.Interfaces;
-using OzonEdu.MerchApi.Infrastructure.Services.Interfaces;
-using OzonEdu.MerchApi.Infrastructure.Services.Interfaces.Implementation;
+using OzonEdu.MerchApi.Infrastructure.Services.Implementation;
+using OzonEdu.MerchApi.Services.Handlers.MerchRequestAggregate;
+using OzonEdu.MerchApi.Services.PipelineBehaviors.UnitOfWorkBehavior;
 
 namespace OzonEdu.MerchApi
 {
@@ -32,14 +34,16 @@ namespace OzonEdu.MerchApi
             AddDatabaseComponents(services);
             AddMockServices(services);
             AddPostgreRepositories(services);
-            //AddMockRepositories(services);
             AddMediator(services);
         }
         
 
         private static void AddMediator(IServiceCollection services)
-        {    
+        {
             services.AddMediatR(typeof(IssueMerchCommandHandler));
+            services.AddValidatorsFromAssembly(typeof(IssueMerchCommandHandler).Assembly);
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkBehavior<,>));
         }
         
         private void AddDatabaseComponents(IServiceCollection services)

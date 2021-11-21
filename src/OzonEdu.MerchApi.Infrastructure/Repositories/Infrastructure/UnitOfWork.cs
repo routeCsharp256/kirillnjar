@@ -39,7 +39,18 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Infrastructure
             _npgsqlTransaction = await connection.BeginTransactionAsync(token);
         }
 
-        public async Task SaveChangesAsync(CancellationToken cancellationToken)
+
+        public async Task Rollback(CancellationToken cancellationToken)
+        {            
+            if (_npgsqlTransaction is null)
+            {
+                throw new NoActiveTransactionStartedException();
+            }
+
+            await _npgsqlTransaction.RollbackAsync(cancellationToken);
+        }
+
+        public async Task SaveChanges(CancellationToken cancellationToken)
         {
             if (_npgsqlTransaction is null)
             {

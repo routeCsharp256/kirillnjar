@@ -14,10 +14,10 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchRequestAggregate
         [Theory]
         [InlineData(1)]
         [InlineData(2)]
-        public void SetAsAwaitingDeliveryTestSuccess(int merchRequestStatus)
+        public void SetAsAwaitingDelivery_WhenMerchPackStatusValid_DoesNotThrow(int merchRequestStatus)
         {
             //Arrange
-            var currentDateTime = new MerchRequestDateTime(DateTime.Parse("16.11.2021"));
+            var currentDateTime = MerchRequestDateTime.Create(DateTime.Parse("16.11.2021"));
             var testRequest =
                 new MerchRequest(
                     _merchRequest.Employee,
@@ -37,10 +37,10 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchRequestAggregate
         [Theory]
         [InlineData(3)]
         [InlineData(4)]
-        public void SetAsAwaitingDeliveryTestNotSuccess(int merchRequestStatus)
+        public void SetAsAwaitingDelivery_WhenMerchPackStatusInvalid_Throw(int merchRequestStatus)
         {
             //Arrange
-            var currentDateTime = new MerchRequestDateTime(DateTime.Parse("16.11.2021"));
+            var currentDateTime = MerchRequestDateTime.Create(DateTime.Parse("16.11.2021"));
             var testRequest =
                 new MerchRequest(
                     _merchRequest.Employee,
@@ -59,10 +59,10 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchRequestAggregate
         [InlineData(1)]
         [InlineData(2)]
         [InlineData(4)]
-        public void SetAsDoneTestSuccess(int merchRequestStatus)
+        public void SetAsDone_WhenMerchPackStatusValid_DoesNotThrow(int merchRequestStatus)
         {
             //Arrange
-            var currentDateTime = new MerchRequestDateTime(DateTime.Parse("16.11.2021"));
+            var currentDateTime = MerchRequestDateTime.Create(DateTime.Parse("16.11.2021"));
             var testRequest =
                 new MerchRequest(
                     _merchRequest.Employee,
@@ -81,10 +81,10 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchRequestAggregate
         
         [Theory]
         [InlineData(3)]
-        public void SetAsDoneTestNotSuccess(int merchRequestStatus)
+        public void SetAsDone_WhenMerchPackStatusInvalid_Throw(int merchRequestStatus)
         {
             //Arrange
-            var currentDateTime = new MerchRequestDateTime(DateTime.Parse("16.11.2021"));
+            var currentDateTime = MerchRequestDateTime.Create(DateTime.Parse("16.11.2021"));
             var testRequest =
                 new MerchRequest(
                     _merchRequest.Employee,
@@ -104,10 +104,10 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchRequestAggregate
         [InlineData(1)]
         [InlineData(2)]
         [InlineData(3)]
-        public void SetAsCanceledDeliveryTestSuccess(int merchRequestStatus)
+        public void SetAsCanceled_WhenMerchPackStatusValid_DoesNotThrow(int merchRequestStatus)
         {
             //Arrange
-            var currentDateTime = new MerchRequestDateTime(DateTime.Parse("16.11.2021"));
+            var currentDateTime = MerchRequestDateTime.Create(DateTime.Parse("16.11.2021"));
             var testRequest =
                 new MerchRequest(
                     _merchRequest.Employee,
@@ -126,10 +126,10 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchRequestAggregate
         
         [Theory]
         [InlineData(4)]
-        public void SetAsCanceledDeliveryTestNotSuccess(int merchRequestStatus)
+        public void SetAsCanceled_WhenMerchPackStatusInvalid_Throw(int merchRequestStatus)
         {
             //Arrange
-            var currentDateTime = new MerchRequestDateTime(DateTime.Parse("16.11.2021"));
+            var currentDateTime = MerchRequestDateTime.Create(DateTime.Parse("16.11.2021"));
             var testRequest =
                 new MerchRequest(
                     _merchRequest.Employee,
@@ -148,7 +148,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchRequestAggregate
         [Theory]
         [InlineData("01.01.2020", "31.12.2020")]
         [InlineData("01.01.1998", "05.06.1998")]
-        public void IsIssuedLessYearTrue(string requestDateString, string currentDateString)
+        public void IsIssuedLessYear_WhenIssuedLessYear_True(string requestDateString, string currentDateString)
         {
             //Arrange
             var requestDateTime = DateTime.Parse(requestDateString);
@@ -158,7 +158,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchRequestAggregate
                 new MerchRequest(
                     _merchRequest.Employee,
                     _merchRequest.MerchPackId,
-                    new MerchRequestDateTime(requestDateTime),
+                    MerchRequestDateTime.Create(requestDateTime),
                     MerchRequestStatus.Done,
                     _merchRequest.MerchRequestFrom);
 
@@ -171,7 +171,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchRequestAggregate
         [Theory]
         [InlineData("01.01.2020", "31.12.2021")]
         [InlineData("01.01.1998", "01.01.1999")]
-        public void IsIssuedLessYearFalse(string requestDateString, string currentDateString)
+        public void IsIssuedLessYear_WhenIssuedOverYear_False(string requestDateString, string currentDateString)
         {
             //Arrange
             var requestDateTime = DateTime.Parse(requestDateString);
@@ -181,7 +181,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchRequestAggregate
                 new MerchRequest(
                     _merchRequest.Employee,
                     _merchRequest.MerchPackId,
-                    new MerchRequestDateTime(requestDateTime),
+                    MerchRequestDateTime.Create(requestDateTime),
                     MerchRequestStatus.Done,
                     _merchRequest.MerchRequestFrom);
 
@@ -192,7 +192,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchRequestAggregate
         }
         
         [Fact]
-        public void CreateMerchRequestWithNulls()
+        public void Constructor_WhenPropertiesAreNulls_Throw()
         {
             //Arrange 
             //Act
@@ -212,10 +212,10 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchRequestAggregate
         private readonly MerchRequest _merchRequest =
             new(1, 
                 new Employee(
-                    new Email("iivanov@mail.com"),
-                    new EmployeeFullName("Ivan", "Ivanov", "Ivanovich")),
+                    Email.Create("iivanov@mail.com"),
+                    FullName.Create("Ivan", "Ivanov", "Ivanovich")),
                 1,
-                new MerchRequestDateTime(DateTime.Parse("21.12.2020")),
+                MerchRequestDateTime.Create(DateTime.Parse("21.12.2020")),
                 MerchRequestStatus.AwaitingDelivery,
                 new MerchRequestFrom(MerchRequestFromType.Automatically));
        

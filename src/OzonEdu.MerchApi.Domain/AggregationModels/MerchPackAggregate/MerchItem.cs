@@ -15,7 +15,6 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate
         {
             Id = id;
         }
-
-        public Sku Sku { get; private set; }
+        public Sku Sku { get; }
     }
 }

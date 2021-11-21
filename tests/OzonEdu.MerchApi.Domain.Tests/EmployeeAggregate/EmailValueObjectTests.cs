@@ -12,12 +12,12 @@ namespace OzonEdu.MerchApi.Domain.Tests.EmployeeAggregate
         [InlineData("3espen.stirlin@osmye.com")]
         [InlineData("9kame@zipsq.site")]
         [InlineData("lnicolas.kiikan5@sauhasc.com")]
-        public void CreateEmailSuccess(string emailValue)
+        public void Constructor_WhenEmailValid_DoesNotThrow(string emailValue)
         {
             //Arrange 
 
             //Act
-            var email = new Email(emailValue);
+            var email = Email.Create(emailValue);
 
             //Assert  
             Assert.Equal(email.Value, emailValue);
@@ -29,13 +29,13 @@ namespace OzonEdu.MerchApi.Domain.Tests.EmployeeAggregate
         [InlineData("@bookea.site")]
         [InlineData("3espen.stirlin@osmye")]
         [InlineData("9kame.zipsq.site")]
-        public void CreateEmailNotSuccess(string emailValue)
+        public void Constructor_WhenEmailInvalid_Throw(string emailValue)
         {
             //Arrange 
             //Act
 
             //Assert  
-            Assert.Throws<InvalidEmailException>(() => new Email(emailValue));
+            Assert.Throws<InvalidEmailException>(() => Email.Create(emailValue));
         }
     }
 }

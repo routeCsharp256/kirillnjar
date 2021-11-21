@@ -25,7 +25,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
             _changeTracker = changeTracker;
         }
         
-        public async Task<IReadOnlyList<MerchPack>> GetBySkusAsync(IReadOnlyList<Sku> skus, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<MerchPack>> Get(IReadOnlyList<Sku> skus, CancellationToken cancellationToken)
         {
             const string sql = @"
                 select mp.id, mp.end_date, mp.type_id,
@@ -54,7 +54,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
                 commandTimeout: Timeout,
                 cancellationToken: cancellationToken);
             var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
-            // TODO: Dictionary into merch pack model
             var dbMerchPacks = await connection.QueryAsync<
                     Models.MerchPack, MerchPackType , Models.MerchPackItem, Models.MerchItem,
                 (Models.MerchPack, MerchPackType , Models.MerchPackItem, Models.MerchItem)>
@@ -74,7 +73,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
             return result.ToList();
         }
 
-        public async Task<MerchPack> GetByTypeIdAsync(int typeId, CancellationToken cancellationToken)
+        public async Task<MerchPack> Get(int typeId, CancellationToken cancellationToken)
         {
             const string sql = @"
                 select mp.id, mp.end_date, mp.type_id,
@@ -99,7 +98,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
                 commandTimeout: Timeout,
                 cancellationToken: cancellationToken);
             var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
-            // TODO: Dictionary into merch pack model
             var dbMerchPacks = await connection.QueryAsync<
                     Models.MerchPack, MerchPackType , Models.MerchPackItem, Models.MerchItem,
                 (Models.MerchPack, MerchPackType , Models.MerchPackItem, Models.MerchItem)>
@@ -126,8 +124,8 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
                         .FirstOrDefault(it => it.Id.Equals(group.FirstOrDefault().Item2.Id)),
                     group
                         .ToDictionary(
-                            _ => new MerchItem(_.Item4.Id, new Sku(_.Item4.Sku)),
-                            _ => new MerchItemsQuantity(_.Item3.Quantity))));
+                            _ => new MerchItem(_.Item4.Id, Sku.Create(_.Item4.Sku)),
+                            _ => MerchItemsQuantity.Create(_.Item3.Quantity))));
         }
     }
 }

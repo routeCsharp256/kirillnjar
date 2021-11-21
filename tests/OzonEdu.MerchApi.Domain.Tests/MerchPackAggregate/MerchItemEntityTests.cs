@@ -11,10 +11,10 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchPackAggregate
         [InlineData(1)]
         [InlineData(2)]
         [InlineData(3)]
-        public void CreateMerchItemSuccess(long sku)
+        public void Constructor_WhenMerchItemValid_DoesNotThrow(long sku)
         {
             //Arrange 
-            var testSku = new Sku(sku);
+            var testSku = Sku.Create(sku);
             
             //Act
             var merchItem = new MerchItem(testSku);
@@ -25,7 +25,7 @@ namespace OzonEdu.MerchApi.Domain.Tests.MerchPackAggregate
         
         
         [Fact]
-        public void CreateMerchItemWithNullSku()
+        public void Constructor_WhenMerchItemSkuInvalid_Throw()
         {
             //Arrange 
             //Act

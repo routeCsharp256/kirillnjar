@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using OzonEdu.MerchApi.Enums;
 using OzonEdu.MerchApi.HttpModels.Request;
 using OzonEdu.MerchApi.HttpModels.Response;
-using OzonEdu.MerchApi.Infrastructure.Commands.IssueMerch;
-using OzonEdu.MerchApi.Infrastructure.Models;
-using OzonEdu.MerchApi.Infrastructure.Queries.MerchRequestAggregate;
+using OzonEdu.MerchApi.Services.Commands.IssueMerch;
+using OzonEdu.MerchApi.Services.Models;
+using OzonEdu.MerchApi.Services.Queries.MerchRequestAggregate;
 
 namespace OzonEdu.MerchApi.Controllers.V1
 {
@@ -54,10 +54,10 @@ namespace OzonEdu.MerchApi.Controllers.V1
                 Email = employeeEmail
             }, token);
 
-            return result.Items.Select(_ => new MerchInfoResponse
+            return result.Items.Select(mp => new MerchInfoResponse
             {
-                TypeId = _.MerchPackTypeId,
-                DateGiving = _.DateGiven
+                TypeId = mp.MerchPackTypeId,
+                DateGiving = mp.DateGiven
             });
         }
     }

@@ -7,7 +7,6 @@ using Npgsql;
 using OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate;
 using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.Models;
-using OzonEdu.MerchApi.Infrastructure.Models;
 using OzonEdu.MerchApi.Infrastructure.Repositories.Infrastructure.Interfaces;
 
 namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
@@ -24,9 +23,8 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
             _changeTracker = changeTracker;
         }
 
-        public async Task<MerchRequest> CreateAsync(MerchRequest createdItem, CancellationToken cancellationToken)
+        public async Task<MerchRequest> Create(MerchRequest createdItem, CancellationToken cancellationToken)
         {
-            // TODO: employee into another query
             const string sql = @"
                 with inserted_employee as (select id from employees  where email = @Email), 
                      inserting_employee as (insert into employees (first_name, last_name, middle_name, email, status_id)
@@ -38,9 +36,9 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
                 returning id as merch_id";
             var parameters = new
             {
-                FirstName = createdItem.Employee.Name.FirstName,
-                LastName = createdItem.Employee.Name.LastName,
-                MiddleName = createdItem.Employee.Name.MiddleName,
+                FirstName = createdItem.Employee.Name.FirstName.Value,
+                LastName = createdItem.Employee.Name.LastName.Value,
+                MiddleName = createdItem.Employee.Name.MiddleName.Value,
                 Email = createdItem.Employee.Email.Value,
                 StatusId = createdItem.Employee.Status.Id,
                 MerchPackId = createdItem.MerchPackId,
@@ -63,7 +61,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
             
         }
 
-        public async Task<MerchRequest> UpdateAsync(MerchRequest updatedItem, CancellationToken cancellationToken)
+        public async Task<MerchRequest> Update(MerchRequest updatedItem, CancellationToken cancellationToken)
         {
             const string sql = @"
                 update employees
@@ -96,7 +94,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
             return result;
         }
 
-        public async Task<IReadOnlyList<MerchRequest>> GetByMerchPackAndStatusAsync(int merchPackId, MerchRequestStatus status, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<MerchRequest>> Get(int merchPackId, MerchRequestStatus status, CancellationToken cancellationToken)
         {
             const string sql = @"
                 select mr. id, mr.merch_pack_id as MerchPackId, mr.employee_id as EmployeeId, mr.status_type_id as StatusTypeId, 
@@ -125,7 +123,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
             return dbMerchRequests.ToList();
         }
 
-        public async Task<IReadOnlyList<MerchRequest>> GetByEmployeeEmailAndStatusAsync(Email employeeEmail, MerchRequestStatus status,
+        public async Task<IReadOnlyList<MerchRequest>> Get(Email employeeEmail, MerchRequestStatus status,
             CancellationToken cancellationToken)
         {
             const string sql = @"
@@ -157,7 +155,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
 
 
 
-        public async Task<IReadOnlyList<MerchRequest>> GetByEmployeeEmailAndMerchPackTypeAsync(Email employeeEmail, int merchPackTypeId,
+        public async Task<IReadOnlyList<MerchRequest>> Get(Email employeeEmail, int merchPackTypeId,
             CancellationToken cancellationToken)
         {
             const string sql = @"
@@ -221,15 +219,15 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
                 mr.Id.Value,
                 new Employee(
                     emp.Id.Value,
-                    new Email(emp.Email),
-                    new EmployeeFullName(emp.LastName, 
+                    Email.Create(emp.Email),
+                    FullName.Create(emp.LastName, 
                         emp.FirstName,
                         emp.MiddleName),
                     Enumeration
                         .GetAll<EmployeeStatus>()
                         .FirstOrDefault(it => it.Id.Equals(emp.StatusId))),
                 mr.MerchPackId,
-                new MerchRequestDateTime(mr.UpdateDate),
+                MerchRequestDateTime.Create(mr.UpdateDate),
                 Enumeration
                     .GetAll<MerchRequestStatus>()
                     .FirstOrDefault(it => it.Id.Equals(mr.StatusTypeId)),

@@ -7,6 +7,7 @@
 
 
     <ItemGroup>
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.3.4" />
         <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
@@ -18,6 +19,7 @@
       <ProjectReference Include="..\OzonEdu.MerchApi.HttpModels\OzonEdu.MerchApi.HttpModels.csproj" />
       <ProjectReference Include="..\OzonEdu.MerchApi.Infrastructure\OzonEdu.MerchApi.Infrastructure.csproj" />
       <ProjectReference Include="..\OzonEdu.MerchApi.Migrator\OzonEdu.MerchApi.Migrator.csproj" />
+      <ProjectReference Include="..\OzonEdu.MerchApi.Services\OzonEdu.MerchApi.Services.csproj" />
     </ItemGroup>
 
 </Project>

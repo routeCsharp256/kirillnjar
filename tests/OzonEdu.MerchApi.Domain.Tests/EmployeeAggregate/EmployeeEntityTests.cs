@@ -12,28 +12,28 @@ namespace OzonEdu.MerchApi.Domain.Tests.EmployeeAggregate
         [InlineData("3espen.stirlin@osmye.com", "Харитонов", "Кондрат", "Антонович")]
         [InlineData("9kame@zipsq.site", "Быков", "Игорь", "Олегович")]
         [InlineData("lnicolas.kiikan5@sauhasc.com", "Григорьев", "Исак", null)]
-        public void CreateEmployeeSuccess(string email, string lastName, string firstName, string middleName)
+        public void Constructor_WhenEmployeeValid_DoesNotThrow(string email, string lastName, string firstName, string middleName)
         {
             //Arrange 
-            var testEmail = new Email(email);
-            var testFullName = new EmployeeFullName(lastName, firstName, middleName);
+            var testEmail = Email.Create(email);
+            var testFullName = FullName.Create(lastName, firstName, middleName);
             
             //Act
             var employee = new Employee(testEmail, testFullName);
 
             //Assert  
             Assert.Equal(employee.Email.Value, email);
-            Assert.Equal(employee.Name.FirstName, firstName);
-            Assert.Equal(employee.Name.LastName, lastName);
-            Assert.Equal(employee.Name.MiddleName, middleName);
+            Assert.Equal(employee.Name.FirstName.Value, firstName);
+            Assert.Equal(employee.Name.LastName.Value, lastName);
+            Assert.Equal(employee.Name.MiddleName.Value, middleName);
         }
         
         
         [Fact]
-        public void CreateEmployeeWithNullEmail()
+        public void Constructor_WhenEmployeeEmailNull_Throw()
         {
             //Arrange 
-            var testFullName = new EmployeeFullName("ivanov", "ivan", "ivanovich");
+            var testFullName = FullName.Create("ivanov", "ivan", "ivanovich");
             
             //Act
 
@@ -42,10 +42,10 @@ namespace OzonEdu.MerchApi.Domain.Tests.EmployeeAggregate
         }
         
         [Fact]
-        public void CreateEmployeeWithNullName()
+        public void Constructor_WhenEmployeeNameNull_Throw()
         {
             //Arrange 
-            var testEmail = new Email("iivanov@mail.com");
+            var testEmail = Email.Create("iivanov@mail.com");
             
             //Act
 

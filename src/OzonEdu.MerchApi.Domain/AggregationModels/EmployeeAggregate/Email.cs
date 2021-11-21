@@ -7,12 +7,18 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate
 {
     public class Email : ValueObject
     {
-        public Email(string value)
+        private Email(string value)
         {
-            if (!IsValidEmail(value))
-                throw new InvalidEmailException($"Employee email \"{value}\" is not valid");
             Value = value;
         }
+        
+        public static Email Create(string emailString)
+        {
+            if (!IsValidEmail(emailString))
+                throw new InvalidEmailException($"Employee email \"{emailString}\" is not valid");
+            return new Email(emailString);
+        }
+        
         private static bool IsValidEmail(string emailString)
             => !string.IsNullOrWhiteSpace(emailString)
                 && Regex.IsMatch(emailString, @"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*");

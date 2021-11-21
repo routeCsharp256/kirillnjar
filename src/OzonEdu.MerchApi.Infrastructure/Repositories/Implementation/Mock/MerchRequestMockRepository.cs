@@ -23,30 +23,30 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
             _merchRequests = new List<MerchRequest>
             {
                 new(1, new Employee(
-                        new Email("iivanov@mail.com"),
-                        new EmployeeFullName("Ivan", "Ivanov", "Ivanovich")),
+                        Email.Create("iivanov@mail.com"),
+                        FullName.Create("Ivan", "Ivanov", "Ivanovich")),
                     1,
-                    new MerchRequestDateTime(DateTime.ParseExact("21.12.2020", "dd.MM.yyyy", CultureInfo.InvariantCulture)),
+                    MerchRequestDateTime.Create(DateTime.ParseExact("21.12.2020", "dd.MM.yyyy", CultureInfo.InvariantCulture)),
                     MerchRequestStatus.Done,
                     new MerchRequestFrom(MerchRequestFromType.Automatically)),
                 new(2, new Employee(
-                        new Email("ppetrov@mail.com"),
-                        new EmployeeFullName("Petr", "Petrov", "Petrovich")),
+                        Email.Create("ppetrov@mail.com"),
+                        FullName.Create("Petr", "Petrov", "Petrovich")),
                     2,
-                    new MerchRequestDateTime(DateTime.ParseExact("22.12.2020", "dd.MM.yyyy", CultureInfo.InvariantCulture)),
+                    MerchRequestDateTime.Create(DateTime.ParseExact("22.12.2020", "dd.MM.yyyy", CultureInfo.InvariantCulture)),
                     MerchRequestStatus.AwaitingDelivery,
                     new MerchRequestFrom(MerchRequestFromType.Manually)),
                 new(3, new Employee(
-                        new Email("aivanova@mail.com"),
-                        new EmployeeFullName("Anna", "Ivanova", "Ivanovna")),
+                        Email.Create("aivanova@mail.com"),
+                        FullName.Create("Anna", "Ivanova", "Ivanovna")),
                     5,
-                    new MerchRequestDateTime(DateTime.ParseExact("23.12.2020", "dd.MM.yyyy", CultureInfo.InvariantCulture)),
+                    MerchRequestDateTime.Create(DateTime.ParseExact("23.12.2020", "dd.MM.yyyy", CultureInfo.InvariantCulture)),
                     MerchRequestStatus.Canceled,
                     new MerchRequestFrom(MerchRequestFromType.Manually))
             };
         }
 
-        public async Task<MerchRequest> CreateAsync(MerchRequest createdItem, CancellationToken cancellationToken)
+        public async Task<MerchRequest> Create(MerchRequest createdItem, CancellationToken cancellationToken)
         {
             return await Task.Run(() =>
                 {
@@ -62,7 +62,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
                 }, cancellationToken);
         }
 
-        public async Task<MerchRequest> UpdateAsync(MerchRequest updatedItem, CancellationToken cancellationToken)
+        public async Task<MerchRequest> Update(MerchRequest updatedItem, CancellationToken cancellationToken)
         {
             if (updatedItem.Id == default)
                 throw new Exception($"for update id must have a value");
@@ -76,7 +76,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
                 }, cancellationToken);
         }
 
-        public async Task<IReadOnlyList<MerchRequest>> GetByMerchPackAndStatusAsync(int merchPackId, MerchRequestStatus status, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<MerchRequest>> Get(int merchPackId, MerchRequestStatus status, CancellationToken cancellationToken)
         {
             return await Task.Run(() =>
             {
@@ -86,7 +86,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
             }, cancellationToken);
         }
 
-        public async Task<IReadOnlyList<MerchRequest>> GetByEmployeeEmailAndStatusAsync(Email employeeEmail, MerchRequestStatus status,
+        public async Task<IReadOnlyList<MerchRequest>> Get(Email employeeEmail, MerchRequestStatus status,
             CancellationToken cancellationToken)
         {
             return await Task.Run(() =>
@@ -98,7 +98,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock
             }, cancellationToken);
         }
 
-        public async Task<IReadOnlyList<MerchRequest>> GetByEmployeeEmailAndMerchPackTypeAsync(Email employeeEmail, int merchPackTypeId,
+        public async Task<IReadOnlyList<MerchRequest>> Get(Email employeeEmail, int merchPackTypeId,
             CancellationToken cancellationToken)
         {
             return await Task.Run(() =>

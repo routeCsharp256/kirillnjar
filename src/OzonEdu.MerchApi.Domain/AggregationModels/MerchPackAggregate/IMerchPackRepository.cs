@@ -5,10 +5,10 @@ using OzonEdu.MerchApi.Domain.Contracts;
 
 namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate
 {
-    public interface IMerchPackRepository : IRepository<MerchItem>
+    public interface IMerchPackRepository : IRepository<MerchPack>
     {
-        Task<MerchPack> GetByTypeIdAsync(int TypeId, CancellationToken cancellationToken);
+        Task<MerchPack> Get(int typeId, CancellationToken cancellationToken);
 
-        Task<IReadOnlyList<MerchPack>> GetBySkusAsync(IReadOnlyList<Sku> skus, CancellationToken cancellationToken);
+        Task<IReadOnlyList<MerchPack>> Get(IReadOnlyList<Sku> skus, CancellationToken cancellationToken);
     }
 }
