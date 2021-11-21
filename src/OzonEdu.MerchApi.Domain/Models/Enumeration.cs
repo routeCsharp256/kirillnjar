@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using OzonEdu.MerchApi.Domain.Exceptions;
 
 namespace OzonEdu.MerchApi.Domain.Models
 {
     public abstract class Enumeration : IComparable
     {
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        public int Id { get; private set; }
+        public int Id { get; }
 
         protected Enumeration(int id, string name) => (Id, Name) = (id, name);
 
@@ -35,7 +36,13 @@ namespace OzonEdu.MerchApi.Domain.Models
             return typeMatches && valueMatches;
         }
 
-        public int CompareTo(object other) => Id.CompareTo(((Enumeration)other).Id);
-
+        public int CompareTo(object other)
+        {
+            if (other is not Enumeration enumeration)
+            {
+                throw new EnumerationInvalidCastException($"type {other.GetType().Name} is not type {this.GetType().Name}");
+            }
+            return Id.CompareTo(enumeration.Id);
+        } 
     }
 }
