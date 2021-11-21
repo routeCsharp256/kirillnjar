@@ -7,6 +7,9 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate
 {
     public class Email : ValueObject
     {
+    
+        private const string EmailRegexpPattern = @"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*";
+        public string Value { get; }
         public Email(string value)
         {
             if (!IsValidEmail(value))
@@ -15,8 +18,7 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate
         }
         private static bool IsValidEmail(string emailString)
             => !string.IsNullOrWhiteSpace(emailString)
-                && Regex.IsMatch(emailString, @"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*");
-        public string Value { get; }
+                && Regex.IsMatch(emailString, EmailRegexpPattern);
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

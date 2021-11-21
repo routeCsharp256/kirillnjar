@@ -10,6 +10,7 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate
         public string FirstName { get; }
         public string LastName { get; }
         public string MiddleName { get; }
+        private const string OnlyLettersRegexpPattern = @"^[А-ЯA-Za-zа-я]+$";
 
         public EmployeeFullName(string lastName, string firstName , string middleName)
         {
@@ -24,9 +25,9 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.EmployeeAggregate
         private static bool IsValidName(string firstName, string lastName, string middleName)
             => (!string.IsNullOrWhiteSpace(firstName)
                 && !string.IsNullOrWhiteSpace(lastName)
-               && Regex.IsMatch(firstName, @"^[А-ЯA-Za-zа-я]+$")
-               && Regex.IsMatch(lastName, @"^[А-ЯA-Za-zа-я]+$")
-               && !(middleName is not null && !Regex.IsMatch(middleName, @"^[А-ЯA-Za-zа-я]+$")));
+               && Regex.IsMatch(firstName, OnlyLettersRegexpPattern)
+               && Regex.IsMatch(lastName, OnlyLettersRegexpPattern)
+               && !(middleName is not null && !Regex.IsMatch(middleName,OnlyLettersRegexpPattern)));
         
         protected override IEnumerable<object> GetEqualityComponents()
         {
