@@ -64,7 +64,7 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate
                     $"Status {MerchRequestStatus.AwaitingDelivery.Name} can't be set after {MerchRequestStatus.Done.Name}");
             }
 
-            InsureNotCanceled();
+            EnsureNotCanceled();
             
             MerchRequestStatus = MerchRequestStatus.AwaitingDelivery;
             MerchRequestDateTime = merchRequestDateTime;
@@ -72,7 +72,7 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate
 
         public void SetAsDone(MerchRequestDateTime merchRequestDateTime)
         {
-            InsureNotCanceled();
+            EnsureNotCanceled();
             MerchRequestStatus = MerchRequestStatus.Done;
             MerchRequestDateTime = merchRequestDateTime;
         }
@@ -92,7 +92,7 @@ namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate
         public bool IsIssuedLessYear(DateTime now)
             => now <  MerchRequestDateTime.Value.AddYears(1);
 
-        private void InsureNotCanceled()
+        private void EnsureNotCanceled()
         {
             if (MerchRequestStatus.Equals(MerchRequestStatus.Canceled))
                 throw new MerchRequestStatusException(
