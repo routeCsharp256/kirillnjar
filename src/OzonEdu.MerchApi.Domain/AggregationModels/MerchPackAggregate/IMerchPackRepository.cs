@@ -5,7 +5,7 @@ using OzonEdu.MerchApi.Domain.Contracts;
 
 namespace OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate
 {
-    public interface IMerchPackRepository : IRepository<MerchItem>
+    public interface IMerchPackRepository : IRepository<MerchPack>
     {
         Task<MerchPack> Get(int typeId, CancellationToken cancellationToken);
 

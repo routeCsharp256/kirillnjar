@@ -2,7 +2,7 @@
 
 namespace OzonEdu.MerchApi.Domain.Contracts
 {
-    public interface IRepository<TEntity> where TEntity : Entity
+    public interface IRepository<TAggregationRoot> where TAggregationRoot : IAggregationRoot
     {
     }
 }
