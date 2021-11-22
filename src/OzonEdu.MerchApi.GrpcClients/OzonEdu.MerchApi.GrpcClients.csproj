@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\OzonEdu.MerchApi.Grpc\OzonEdu.MerchApi.Grpc.csproj" />
+        <ProjectReference Include="..\OzonEdu.MerchApi.HttpModels\OzonEdu.MerchApi.HttpModels.csproj" />
+    </ItemGroup>
+</Project>

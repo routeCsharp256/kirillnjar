@@ -19,7 +19,7 @@ services:
       - supply-service
     ports:
       - "8083:80"
-  merchandise-service:
+  merch-api:
     build:
       context: ../.
       dockerfile: dockerfile
