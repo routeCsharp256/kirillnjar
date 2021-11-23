@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using OzonEdu.MerchApi.Domain.Models;
@@ -19,6 +20,8 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Infrastructure
         
         public void Track(Entity entity)
         {
+            if (entity is null)
+                throw new ArgumentNullException(nameof(entity), $"Can't track null {nameof(entity)} in change tracker");
             _usedEntitiesBackingField.Add(entity);
         }
     }
