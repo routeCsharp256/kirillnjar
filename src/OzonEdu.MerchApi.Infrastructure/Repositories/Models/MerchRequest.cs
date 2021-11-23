@@ -4,17 +4,17 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Models
 {
     public class MerchRequest
     {
-        public int? Id { get; set; }
+        public int Id { get; init; }
         
-        public int MerchPackId { get; set; }
+        public int MerchPackId { get; init; }
         
-        public int EmployeeId { get; set; }
+        public int EmployeeId { get; init; }
         
-        public int StatusTypeId { get; set; }
+        public int StatusTypeId { get; init; }
         
-        public DateTime UpdateDate { get; set; }
+        public DateTime UpdateDate { get; init; }
         
-        public int FromTypeId { get; set; }
+        public int FromTypeId { get; init; }
 
         
     }

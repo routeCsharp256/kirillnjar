@@ -2,7 +2,7 @@
 {
     public class MerchItem
     {
-        public int Id { get; set; }
-        public long Sku { get; set; }
+        public int Id { get; init; }
+        public long Sku { get; init; }
     }
 }

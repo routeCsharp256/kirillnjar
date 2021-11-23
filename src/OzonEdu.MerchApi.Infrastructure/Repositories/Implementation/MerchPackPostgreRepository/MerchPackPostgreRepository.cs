@@ -93,10 +93,10 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.MerchPackP
 
         private static IEnumerable<MerchPack> ToMerchPack(IEnumerable<(Models.MerchPack, MerchPackType , Models.MerchPackItem, Models.MerchItem)> merchPacks)
         {
-            var groupedById = merchPacks.GroupBy(item => item.Item1.Id.Value );
+            var groupedById = merchPacks.GroupBy(item => item.Item1.Id );
             return groupedById.Select(group 
                 => new MerchPack(
-                    group.FirstOrDefault().Item1.Id.Value,
+                    group.FirstOrDefault().Item1.Id,
                     Enumeration
                         .GetAll<MerchPackType>()
                         .FirstOrDefault(it => it.Id.Equals(group.FirstOrDefault().Item2.Id)),

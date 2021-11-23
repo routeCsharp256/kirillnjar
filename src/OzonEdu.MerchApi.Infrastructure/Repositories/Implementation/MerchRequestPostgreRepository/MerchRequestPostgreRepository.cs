@@ -158,9 +158,9 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.MerchReque
 
         private MerchRequest ToMerchRequest(Models.MerchRequest mr, Models.Employee emp) 
             => new MerchRequest(
-                mr.Id.Value,
+                mr.Id,
                 new Employee(
-                    emp.Id.Value,
+                    emp.Id,
                     Email.Create(emp.Email),
                     FullName.Create(emp.LastName, 
                         emp.FirstName,
