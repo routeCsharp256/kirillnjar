@@ -132,7 +132,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.MerchReque
                 commandTimeout: Timeout,
                 cancellationToken: cancellationToken);
             var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
-            var dbMerchRequests1 = await connection.QueryAsync(commandDefinition);
             var dbMerchRequests = await connection.QueryAsync<Models.MerchRequest, Models.Employee, MerchRequest>
             (commandDefinition,ToMerchRequest);
             return dbMerchRequests.ToList();
