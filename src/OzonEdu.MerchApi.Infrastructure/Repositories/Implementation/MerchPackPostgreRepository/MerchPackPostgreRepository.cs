@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -75,12 +76,17 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.MerchPackP
                 (Models.MerchPack, MerchPackType , Models.MerchPackItem, Models.MerchItem)>
                 (commandDefinition,
                     (mp, mpt, mpi, mi) => (mp, mpt, mpi, mi));
-
+                
             if (!dbMerchPacks.Any())
                 throw new MerchPackNotFoundException($"Merch pack with id {typeId} not found");
 
-            var result = ToMerchPack(dbMerchPacks).Single();
             
+            var results = ToMerchPack(dbMerchPacks);
+            
+            if (results.Count() > 1)
+                throw new MerchPackMultipleFoundException($"Founded multiple merch packs with {typeId}");
+
+            var result = results.Single();
             _changeTracker.Track(result);
             return result;
         }
