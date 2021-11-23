@@ -58,7 +58,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.MerchPackP
             return result.ToList();
         }
 
-        public async Task<MerchPack> Get(int typeId, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<MerchPack>> Get(int typeId, CancellationToken cancellationToken)
         {
             var parameters = new
             {
@@ -76,19 +76,15 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.MerchPackP
                 (Models.MerchPack, MerchPackType , Models.MerchPackItem, Models.MerchItem)>
                 (commandDefinition,
                     (mp, mpt, mpi, mi) => (mp, mpt, mpi, mi));
-                
-            if (!dbMerchPacks.Any())
-                throw new MerchPackNotFoundException($"Merch pack with id {typeId} not found");
-
             
-            var results = ToMerchPack(dbMerchPacks);
+            var result = ToMerchPack(dbMerchPacks);
             
-            if (results.Count() > 1)
-                throw new MerchPackMultipleFoundException($"Founded multiple merch packs with {typeId}");
-
-            var result = results.Single();
-            _changeTracker.Track(result);
-            return result;
+            foreach (var merchPack in result)
+            {
+                _changeTracker.Track(merchPack);
+            }
+            
+            return result.ToList();
         }
 
         private static IEnumerable<MerchPack> ToMerchPack(IEnumerable<(Models.MerchPack, MerchPackType , Models.MerchPackItem, Models.MerchItem)> merchPacks)
