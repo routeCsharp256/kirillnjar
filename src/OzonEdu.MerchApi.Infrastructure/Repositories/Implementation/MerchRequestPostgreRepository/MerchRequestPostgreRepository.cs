@@ -9,7 +9,7 @@ using OzonEdu.MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using OzonEdu.MerchApi.Domain.Models;
 using OzonEdu.MerchApi.Infrastructure.Repositories.Infrastructure.Interfaces;
 
-namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
+namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.MerchRequestPostgreRepository
 {
     public class MerchRequestPostgreRepository : IMerchRequestRepository
     {
@@ -25,15 +25,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
 
         public async Task<MerchRequest> Create(MerchRequest createdItem, CancellationToken cancellationToken)
         {
-            const string sql = @"
-                with inserted_employee as (select id from employees  where email = @Email), 
-                     inserting_employee as (insert into employees (first_name, last_name, middle_name, email, status_id)
-                    values (@FirstName, @LastName, @MiddleName, @Email, @StatusId) on conflict do nothing returning id
-                ), employee_id AS ( select id from inserted_employee union all
-                                    select id from inserting_employee)
-                insert into merch_requests (merch_pack_id, employee_id, update_date, from_type_id, status_type_id)
-                values (@MerchPackId, (select employee_id.id from employee_id), @UpdateDate, @FromTypeId, @StatusTypeId)
-                returning id as merch_id";
             var parameters = new
             {
                 FirstName = createdItem.Employee.Name.FirstName.Value,
@@ -48,14 +39,14 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
             };
             
             var commandDefinition = new CommandDefinition(
-                sql,
+                MerchRequestPostgreQueries.Create(),
                 parameters: parameters,
                 commandTimeout: Timeout,
                 cancellationToken: cancellationToken);
             
             var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
             var id = await connection.QueryAsync<int>(commandDefinition);
-            var result = await GetByIdAsync(id.Single(), cancellationToken);
+            var result = await Get(id.Single(), cancellationToken);
             _changeTracker.Track(result);
             return result;
             
@@ -63,15 +54,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
 
         public async Task<MerchRequest> Update(MerchRequest updatedItem, CancellationToken cancellationToken)
         {
-            const string sql = @"
-                update employees
-                set status_id = @StatusId
-                where employees.id = @EmployeeId;
-                update merch_requests
-                set update_date = @UpdateDate,
-                    status_type_id = @StatusTypeId
-                where merch_requests.id = @MerchRequestId;";
-            
             var parameters = new
             {
                 EmployeeId = updatedItem.Employee.Id,
@@ -82,30 +64,20 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
             };
             
             var commandDefinition = new CommandDefinition(
-                sql,
+                MerchRequestPostgreQueries.Update(),
                 parameters: parameters,
                 commandTimeout: Timeout,
                 cancellationToken: cancellationToken);
             
             var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
             await connection.ExecuteAsync(commandDefinition);
-            var result = await GetByIdAsync(updatedItem.Id, cancellationToken);
+            var result = await Get(updatedItem.Id, cancellationToken);
             _changeTracker.Track(result);
             return result;
         }
 
         public async Task<IReadOnlyList<MerchRequest>> Get(int merchPackId, MerchRequestStatus status, CancellationToken cancellationToken)
         {
-            const string sql = @"
-                select mr. id, mr.merch_pack_id as MerchPackId, mr.employee_id as EmployeeId, mr.status_type_id as StatusTypeId, 
-                       mr.update_date as UpdateDate, mr.from_type_id as FromTypeId,
-                       emp.id, emp.first_name as FirstName, emp.last_name as LastName, emp.middle_name as MiddleName, 
-                       emp.email as Email, emp.status_id as StatusId
-                from merch_requests mr
-                join employees emp on mr.employee_id = emp.id
-                where mr.merch_pack_id = @MerchPackId,
-                and mr.status_type_id = @MerchRequestStatusId;";
-            
             var parameters = new
             {
                 MerchPackId = merchPackId,
@@ -113,7 +85,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
             };
             
             var commandDefinition = new CommandDefinition(
-                sql,
+                MerchRequestPostgreQueries.GetByMerchPackIdAndStatus(),
                 parameters: parameters,
                 commandTimeout: Timeout,
                 cancellationToken: cancellationToken);
@@ -126,16 +98,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
         public async Task<IReadOnlyList<MerchRequest>> Get(Email employeeEmail, MerchRequestStatus status,
             CancellationToken cancellationToken)
         {
-            const string sql = @"
-                select mr. id, mr.merch_pack_id as MerchPackId, mr.employee_id as EmployeeId, mr.status_type_id as StatusTypeId, 
-                       mr.update_date as UpdateDate, mr.from_type_id as FromTypeId,
-                       emp.id, emp.first_name as FirstName, emp.last_name as LastName, emp.middle_name as MiddleName, 
-                       emp.email as Email, emp.status_id as StatusId
-                from merch_requests mr
-                join employees emp on mr.employee_id = emp.id
-                where emp.email = @EmployeeEmail
-                and mr.status_type_id = @MerchRequestStatusId;";
-            
             var parameters = new
             {
                 EmployeeEmail = employeeEmail.Value,
@@ -143,7 +105,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
             };
             
             var commandDefinition = new CommandDefinition(
-                sql,
+                MerchRequestPostgreQueries.GetByEmployeeEmailAndStatus(),
                 parameters: parameters,
                 commandTimeout: Timeout,
                 cancellationToken: cancellationToken);
@@ -158,16 +120,6 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
         public async Task<IReadOnlyList<MerchRequest>> Get(Email employeeEmail, int merchPackTypeId,
             CancellationToken cancellationToken)
         {
-            const string sql = @"
-                select mr. id, mr.merch_pack_id as MerchPackId, mr.employee_id as EmployeeId, mr.status_type_id as StatusTypeId, 
-                       mr.update_date as UpdateDate, mr.from_type_id as FromTypeId,
-                       emp.id, emp.first_name as FirstName, emp.last_name as LastName, emp.middle_name as MiddleName, 
-                       emp.email as Email, emp.status_id as StatusId
-                from merch_requests mr
-                join employees emp on mr.employee_id = emp.id
-                where emp.email = @EmployeeEmail
-                and mr.merch_pack_id = @MerchPackId;";
-            
             var parameters = new
             {
                 EmployeeEmail = employeeEmail.Value,
@@ -175,7 +127,7 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
             };
             
             var commandDefinition = new CommandDefinition(
-                sql,
+                MerchRequestPostgreQueries.GetByEmployeeEmailAndMerchPackId(),
                 parameters: parameters,
                 commandTimeout: Timeout,
                 cancellationToken: cancellationToken);
@@ -186,24 +138,15 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
             return dbMerchRequests.ToList();
         }
 
-        private async Task<MerchRequest> GetByIdAsync(int id, CancellationToken cancellationToken)
+        private async Task<MerchRequest> Get(int id, CancellationToken cancellationToken)
         {
-            const string sql = @"
-                select mr. id, mr.merch_pack_id as MerchPackId, mr.employee_id as EmployeeId, mr.status_type_id as StatusTypeId, 
-                       mr.update_date as UpdateDate, mr.from_type_id as FromTypeId,
-                       emp.id, emp.first_name as FirstName, emp.last_name as LastName, emp.middle_name as MiddleName, 
-                       emp.email as Email, emp.status_id as StatusId
-                from merch_requests mr
-                join employees emp on mr.employee_id = emp.id
-                where mr.id = @MerchRequestId;";
-            
             var parameters = new
             {
                 MerchRequestId = id,
             };
             
             var commandDefinition = new CommandDefinition(
-                sql,
+                MerchRequestPostgreQueries.GetById(),
                 parameters: parameters,
                 commandTimeout: Timeout,
                 cancellationToken: cancellationToken);

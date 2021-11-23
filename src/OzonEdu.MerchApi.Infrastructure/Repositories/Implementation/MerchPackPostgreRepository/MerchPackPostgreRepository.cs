@@ -11,7 +11,7 @@ using OzonEdu.MerchApi.Infrastructure.Repositories.Infrastructure.Interfaces;
 using MerchPack = OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.MerchPack;
 using Sku = OzonEdu.MerchApi.Domain.AggregationModels.MerchPackAggregate.Sku;
 
-namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
+namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.MerchPackPostgreRepository
 {
     public class MerchPackPostgreRepository : IMerchPackRepository
     {
@@ -27,29 +27,13 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
         
         public async Task<IReadOnlyList<MerchPack>> Get(IReadOnlyList<Sku> skus, CancellationToken cancellationToken)
         {
-            const string sql = @"
-                select mp.id, mp.end_date, mp.type_id,
-                       mpt.id, mpt.name,
-                       mpi.id, mpi.merch_item_id, mpi.merch_pack_id, mpi.quantity,
-                       mi.id, mi.sku
-                from merch_packs mp
-                join merch_pack_types mpt on mp.type_id = mpt.id
-                join merch_packs_items mpi on mp.id = mpi.merch_pack_id
-                join merch_items mi on mpi.merch_item_id = mi.id
-                where mpi.merch_pack_id = ANY(
-                    select mpi_in.merch_pack_id
-                    from merch_packs_items mpi_in
-                    join merch_items mi_in on mpi_in.merch_item_id = mi_in.id
-                    where mi_in.sku = ANY(@SkuIds))
-                AND end_date is null";
-            
             var parameters = new
             {
                 SkuIds = skus.Select(x => x.Value).ToArray(),
             };
             
             var commandDefinition = new CommandDefinition(
-                sql,
+                MerchPackPostgreQueries.GetBySku(),
                 parameters: parameters,
                 commandTimeout: Timeout,
                 cancellationToken: cancellationToken);
@@ -75,25 +59,13 @@ namespace OzonEdu.MerchApi.Infrastructure.Repositories.Implementation
 
         public async Task<MerchPack> Get(int typeId, CancellationToken cancellationToken)
         {
-            const string sql = @"
-                select mp.id, mp.end_date, mp.type_id,
-                       mpt.id, mpt.name,
-                       mpi.id, mpi.merch_item_id, mpi.merch_pack_id, mpi.quantity,
-                       mi.id, mi.sku
-                from merch_packs mp
-                join merch_pack_types mpt on mp.type_id = mpt.id
-                join merch_packs_items mpi on mp.id = mpi.merch_pack_id
-                join merch_items mi on mpi.merch_item_id = mi.id
-                where mp.type_id = @TypeId
-                AND end_date is null;";
-
             var parameters = new
             {
                 TypeId = typeId 
             };
             
             var commandDefinition = new CommandDefinition(
-                sql,
+                MerchPackPostgreQueries.GetByTypeId(),
                 parameters: parameters,
                 commandTimeout: Timeout,
                 cancellationToken: cancellationToken);

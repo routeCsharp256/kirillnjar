@@ -12,6 +12,8 @@ using OzonEdu.MerchApi.Domain.Services;
 using OzonEdu.MerchApi.GrpcServices;
 using OzonEdu.MerchApi.Infrastructure.Configuration;
 using OzonEdu.MerchApi.Infrastructure.Repositories.Implementation;
+using OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.MerchPackPostgreRepository;
+using OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.MerchRequestPostgreRepository;
 using OzonEdu.MerchApi.Infrastructure.Repositories.Implementation.Mock;
 using OzonEdu.MerchApi.Infrastructure.Repositories.Infrastructure;
 using OzonEdu.MerchApi.Infrastructure.Repositories.Infrastructure.Interfaces;
