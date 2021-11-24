@@ -16,7 +16,7 @@ namespace OzonEdu.MerchApi.Domain.Models
 
         public override string ToString() => Name;
 
-        public static IEnumerable<T> GetAll<T>() where T : Enumeration =>
+        public static IEnumerable<T> GetAll<T>() =>
             typeof(T).GetFields(BindingFlags.Public |
                                 BindingFlags.Static |
                                 BindingFlags.DeclaredOnly)

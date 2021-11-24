@@ -33,8 +33,14 @@ namespace OzonEdu.MerchApi.Services.Handlers.MerchRequestAggregate
 
         public async Task<IssueMerchCommandResponse> Handle(IssueMerchCommand command, CancellationToken cancellationToken)
         {
-            var merchPack = await _merchPackRepository.Get(command.MerchPackTypeId, cancellationToken)
-                            ?? throw new MerchPackNotFoundException($"Merch pack with id {command.MerchPackTypeId} not found");
+            var merchPacks = await _merchPackRepository.Get(command.MerchPackTypeId, cancellationToken);
+            if (!merchPacks.Any())
+                throw new MerchPackNotFoundException($"Merch pack with id {command.MerchPackTypeId} not found");
+            
+            if (merchPacks.Count > 1)
+                throw new MerchPackMultipleFoundException($"Founded multiple actual merch packs with Id {command.MerchPackTypeId}");
+
+            var merchPack = merchPacks.Single();
             
             var previousRequests = await _merchRequestRepository.Get(Email.Create(command.Employee.Email),
                     command.MerchPackTypeId, cancellationToken);
